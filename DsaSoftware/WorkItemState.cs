@@ -57,4 +57,17 @@ namespace TestTFS
 
         public string AssignedTo { get; set; }
     }
+
+    class ResolveInfo
+    {
+        public int ID { get; set; }
+
+        public string Title { get; set; }
+
+        public string NodeName { get; set; }
+
+        public string ResolvedBy { get; set; }
+
+        public DateTime ResolvedDate { get; set; }
+    }
 }

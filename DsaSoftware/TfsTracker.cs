@@ -29,6 +29,8 @@ namespace TestTFS
 
         private List<ItemInfo> _ItemInfo;
 
+        private List<ResolveInfo> _ResolveResult;
+
         private readonly Application _xlApp;
 
         private readonly Workbook _xlsWorkbook;
@@ -44,6 +46,8 @@ namespace TestTFS
 
             _xlsWorkbook = _xlApp.Workbooks.Add(true);
 
+            _xlsWorkbook.Worksheets.Add(Missing.Value);
+            _xlsWorkbook.Worksheets.Add(Missing.Value);
             _xlsWorkbook.Worksheets.Add(Missing.Value);
             _xlsWorkbook.Worksheets.Add(Missing.Value);
             _xlsWorkbook.Worksheets.Add(Missing.Value);
@@ -273,6 +277,51 @@ namespace TestTFS
                     sheet.Cells[i, 3] = item.ExpectedSolvedDate;
                     sheet.Cells[i, 4] = item.NodeName;
                     sheet.Cells[i, 5] = item.AssignedTo;
+                    i += 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public void ExtractResolveInfo(string sQuery)
+        {
+            _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
+
+            _ResolveResult = new List<ResolveInfo>();
+
+            foreach (var wi in _workItemResult)
+            {
+                string sResolvedBy = wi["Resolved By"].ToString();
+                _ResolveResult.Add(new ResolveInfo()
+                {
+                    ID = wi.Id,
+                    Title = wi.Title,
+                    ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
+                    NodeName = wi.NodeName,
+                    ResolvedBy = sResolvedBy.Substring(0, sResolvedBy.IndexOf('_'))
+                });
+            }
+
+            _ResolveResult.Sort((ResolveInfo x, ResolveInfo y) => x.ResolvedDate.CompareTo(y.ResolvedDate));
+        }
+
+        public void WriteResolveIndex(int n)
+        {
+            try
+            {
+                Worksheet sheet = _xlsWorkbook.Worksheets[n];
+
+                int i = 1;
+                foreach (var item in _ResolveResult)
+                {
+                    sheet.Cells[i, 1] = item.ID;
+                    sheet.Cells[i, 2] = item.Title;
+                    sheet.Cells[i, 3] = item.ResolvedDate;
+                    sheet.Cells[i, 4] = item.NodeName;
+                    sheet.Cells[i, 5] = item.ResolvedBy;
                     i += 1;
                 }
             }
