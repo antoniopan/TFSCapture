@@ -8,6 +8,9 @@ using Microsoft.TeamFoundation.Common;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.TeamFoundation.VersionControl.Client;
 using System.Reflection;
+using System.Xml;
+using System.Text;
+using System.IO;
 
 namespace TestTFS
 {
@@ -35,6 +38,8 @@ namespace TestTFS
 
         private readonly Workbook _xlsWorkbook;
 
+        private readonly HashSet<string> _nameList;
+
         public TfsTracker()
         {
             _xlApp = new Application
@@ -53,6 +58,8 @@ namespace TestTFS
             _xlsWorkbook.Worksheets.Add(Missing.Value);
             _xlsWorkbook.Worksheets.Add(Missing.Value);
             _xlsWorkbook.Worksheets.Add(Missing.Value);
+
+            _nameList = new HashSet<string>();
         }
 
         ~TfsTracker()
@@ -90,7 +97,6 @@ namespace TestTFS
             _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _UrResult = new Dictionary<string, UserRequirementState>();
-            _UrResult.OrderBy(x => x.Key);
 
             foreach (WorkItem wi in _workItemResult)
             {
@@ -160,7 +166,6 @@ namespace TestTFS
             _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _taskResult = new Dictionary<string, TaskState>();
-            _taskResult.OrderBy(x => x.Key);
 
             foreach (WorkItem wi in _workItemResult)
             {
@@ -232,6 +237,7 @@ namespace TestTFS
             foreach (var wi in _workItemResult)
             {
                 string sAssignedTo = wi["Assigned To"].ToString();
+                _nameList.Add(sAssignedTo);
                 _ItemInfo.Add(new ItemInfo()
                 {
                     ID = wi.Id,
@@ -252,6 +258,7 @@ namespace TestTFS
             foreach (var wi in _workItemResult)
             {
                 string sAssignedTo = wi["Assigned To"].ToString();
+                _nameList.Add(sAssignedTo);
                 _ItemInfo.Add(new ItemInfo()
                 {
                     ID = wi.Id,
@@ -295,6 +302,7 @@ namespace TestTFS
             foreach (var wi in _workItemResult)
             {
                 string sResolvedBy = wi["Resolved By"].ToString();
+                _nameList.Add(sResolvedBy);
                 _ResolveResult.Add(new ResolveInfo()
                 {
                     ID = wi.Id,
@@ -329,6 +337,29 @@ namespace TestTFS
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        public void WriteName2File(string sFilename)
+        {
+            var nameArray = _nameList.ToArray();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < nameArray.Length-1; i++)
+            {
+                sb.Append(nameArray[i]);
+                sb.Append(';');
+            }
+            if (nameArray.Length != 0)
+            {
+                sb.Append(nameArray.Last());
+            }
+
+            var sTotal = sb.ToString();
+
+            StreamWriter sw = new StreamWriter(sFilename);
+            sw.WriteLine(sTotal);
+            sw.Flush();
+            sw.Close();
         }
     }
 }
