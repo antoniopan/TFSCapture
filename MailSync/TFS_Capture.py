@@ -58,6 +58,7 @@ def ModifyHtml(srcFile, dstFile, xlsFile):
     FillHtmlWithBlankRow(tables[7], taskUnReviewedSheet.nrows)
     FillHtmlFromSheet(taskUnReviewedSheet, tables[7])
 
+
     f = open(dstFile, 'w', encoding='utf-8')
     f.write(soup.prettify())
     f.close()
@@ -81,10 +82,8 @@ def ModifyHtml(srcFile, dstFile, xlsFile):
     attachment = mail.Attachments.Add("E:/DSA_Software/image004.png")
     attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "ID002")
     mail.HTMLBody = soup.prettify()
-    # mail.Attachments.Add('E:\Tracker\DSA软件Daily Tracker.files\image002.png')
     mail.Send()
     '''
-
 
 def SyncXlsHtml(sheet, table):
     # 读取User Requirement
@@ -154,7 +153,7 @@ def FillHtmlWithBlankRow(table, nrows):
     insertRow = rows[0]
     n = 3
     while n < nrows:
-        if (nrows - n) % 2 == 0:
+        if n % 2 == 1:
             newRow = copy.copy(row2)
         else:
             newRow = copy.copy(row1)
