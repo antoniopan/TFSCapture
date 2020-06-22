@@ -253,8 +253,8 @@ if __name__ == '__main__':
         else:
             update_module_html(sys.argv[1], sys.argv[2], sys.argv[3], 1)
     else:
-        modify_html('E:\Tracker\DSA_Software_Daily_Tracker.htm', 'E:\Tracker\DSA_Software_Daily_Tracker_v1.htm',
-                    'E:\Tracker\temp.xlsx', 1)
-        update_module_html('E:\Code\CSharp\TFSCapture\MailSync\DSA_Software_Daily_Tracker_Module.htm',
-                           'E:\Code\CSharp\TFSCapture\MailSync\DSA_Software_Daily_Tracker_Module_v1.htm',
-                           'E:\Tracker\module.xlsx', 1)
+        f = open('./debug_file.txt', 'r')
+        lines = f.read().splitlines()
+        f.close()
+        modify_html(lines[0], lines[1], lines[2], 1)
+        update_module_html(lines[3], lines[4], lines[5], 1)
