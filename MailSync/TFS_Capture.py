@@ -64,8 +64,6 @@ def modify_html(src_htm, dst_htm, src_xls, option):
         f = open(u'E:/Tracker/name.txt', 'r')
         s_name = f.read();
         f.close()
-        # sys.setdefaultencodeing('utf-8')
-        # warnings.filterwarnings('ignore')
         outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)
         mail.To = s_name
@@ -245,16 +243,15 @@ def fill_html_from_sheet(sheet, table):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 5:
+    if len(sys.argv) == 4:
         day = datetime.date.today().isoweekday()
         # option 0 发邮件，option 1 更新html
         if day % 2 == 0:
-            modify_html(sys.argv[1], sys.argv[2], sys.argv[3], 1)
+            modify_html(sys.argv[1], sys.argv[2], sys.argv[3], 0)
         else:
-            update_module_html(sys.argv[1], sys.argv[2], sys.argv[3], 1)
+            update_module_html(sys.argv[1], sys.argv[2], sys.argv[3], 0)
     else:
-        modify_html('E:\Tracker\DSA_Software_Daily_Tracker.htm', 'E:\Tracker\DSA_Software_Daily_Tracker_v1.htm',
-                    'E:\Tracker\temp.xlsx', 1)
-        update_module_html('E:\Code\CSharp\TFSCapture\MailSync\DSA_Software_Daily_Tracker_Module.htm',
-                           'E:\Code\CSharp\TFSCapture\MailSync\DSA_Software_Daily_Tracker_Module_v1.htm',
-                           'E:\Tracker\module.xlsx', 1)
+        f = open('./debug_file.txt', 'r')
+        lines = f.read().splitlines()
+        modify_html(lines[0], lines[1], lines[2], 1)
+        update_module_html(lines[3], lines[4], lines[5], 1)
