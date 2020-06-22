@@ -22,9 +22,13 @@ namespace TestTFS
 
         public string FileName { get; set; }
 
+        public string FileNameModule { get; set; }
+
         private WorkItemStore _workItemStore;
 
-        private IEnumerable<WorkItem> _workItemResult;
+        private Dictionary<string, Dictionary<string, UserRequirementState>> _UrbyModule;
+
+        //private IEnumerable<WorkItem> _workItemResult;
 
         private Dictionary<string, UserRequirementState> _UrResult;
 
@@ -37,6 +41,8 @@ namespace TestTFS
         private readonly Application _xlApp;
 
         private readonly Workbook _xlsWorkbook;
+
+        private readonly Workbook _xlsWorkbookModule;
 
         private readonly HashSet<string> _nameList;
 
@@ -59,6 +65,8 @@ namespace TestTFS
             _xlsWorkbook.Worksheets.Add(Missing.Value);
             _xlsWorkbook.Worksheets.Add(Missing.Value);
 
+            _xlsWorkbookModule = _xlApp.Workbooks.Add(true);
+
             _nameList = new HashSet<string>();
         }
 
@@ -66,6 +74,8 @@ namespace TestTFS
         {
             _xlsWorkbook.SaveAs(FileName);
             _xlsWorkbook.Close();
+            _xlsWorkbookModule.SaveAs(FileNameModule);
+            _xlsWorkbookModule.Close();
             _xlApp.Quit();
         }
 
@@ -94,17 +104,31 @@ namespace TestTFS
 
         public void ExtractURQueryInfo(string sQuery)
         {
-            _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
+            var workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _UrResult = new Dictionary<string, UserRequirementState>();
+            _UrbyModule = new Dictionary<string, Dictionary<string, UserRequirementState>>();
 
-            foreach (WorkItem wi in _workItemResult)
+            foreach (WorkItem wi in workItemResult)
             {
+                // Process _UrResult
                 string sNodeName = wi.NodeName;
                 if (!_UrResult.Keys.Contains(sNodeName))
                 {
                     _UrResult.Add(sNodeName, new UserRequirementState());
                 }
+
+                // Process _UrbyModule
+                if (!_UrbyModule.Keys.Contains(sNodeName))
+                {
+                    _UrbyModule.Add(sNodeName, new Dictionary<string, UserRequirementState>());
+                }
+                string sUModule = wi["UModule"].ToString();
+                if (!_UrbyModule[sNodeName].Keys.Contains(sUModule))
+                {
+                    _UrbyModule[sNodeName].Add(sUModule, new UserRequirementState());
+                }
+
                 switch (wi.State)
                 {
                     case "10-Requirement":
@@ -112,11 +136,13 @@ namespace TestTFS
                     case "30-Development":
                         {
                             _UrResult[sNodeName].ToBeDeveloped += 1;
+                            _UrbyModule[sNodeName][sUModule].ToBeDeveloped += 1;
                             break;
                         }
                     case "35-Resolved":
                         {
                             _UrResult[sNodeName].ToBeVerified += 1;
+                            _UrbyModule[sNodeName][sUModule].ToBeVerified += 1;
                             break;
                         }
                     case "40-SSIT Done":
@@ -124,6 +150,7 @@ namespace TestTFS
                     case "60-SIT":
                         {
                             _UrResult[sNodeName].Verified += 1;
+                            _UrbyModule[sNodeName][sUModule].Verified += 1;
                             break;
                         }
                 }
@@ -152,7 +179,7 @@ namespace TestTFS
                     sheet.Cells[i, 4] = item.Value.Verified.ToString();
                     sheet.Cells[i, 5] = item.Value.TotalNumber.ToString();
                     sheet.Cells[i, 6] = item.Value.DevelopPercentage;
-                    i += 1;
+                    i++;
                 }
             }
             catch (Exception e)
@@ -161,13 +188,45 @@ namespace TestTFS
             }
         }
 
+        public void WriteUrByModule()
+        {
+            while (_UrbyModule.Count > _xlsWorkbookModule.Worksheets.Count)
+            {
+                _xlsWorkbookModule.Worksheets.Add(Missing.Value);
+            }
+
+            int i = 1;
+            foreach (var urModule in _UrbyModule)
+            {
+                var sheet = _xlsWorkbookModule.Worksheets[i++];
+                sheet.Name = urModule.Key;
+                
+                int j = 1;
+                foreach (var item in urModule.Value)
+                {
+                    item.Value.TotalNumber = item.Value.ToBeDeveloped + item.Value.ToBeVerified + item.Value.Verified;
+                    double dPercentage = Convert.ToDouble(item.Value.ToBeVerified + item.Value.Verified) / Convert.ToDouble(item.Value.TotalNumber);
+                    item.Value.DevelopPercentage = String.Format("{0:P0}", dPercentage);
+
+                    sheet.Cells[j, 1] = item.Key;
+                    sheet.Cells[j, 2] = item.Value.ToBeDeveloped.ToString();
+                    sheet.Cells[j, 3] = item.Value.ToBeVerified.ToString();
+                    sheet.Cells[j, 4] = item.Value.Verified.ToString();
+                    sheet.Cells[j, 5] = item.Value.TotalNumber.ToString();
+                    sheet.Cells[j, 6] = item.Value.DevelopPercentage;
+
+                    j++;
+                }
+            }
+        }
+
         public void ExtractTaskQueryInfo(string sQuery)
         {
-            _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
+            var workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _taskResult = new Dictionary<string, TaskState>();
 
-            foreach (WorkItem wi in _workItemResult)
+            foreach (WorkItem wi in workItemResult)
             {
                 string sNodeName = wi.NodeName;
                 if (!_taskResult.Keys.Contains(sNodeName))
@@ -230,11 +289,11 @@ namespace TestTFS
 
         public void ExtractURList(string sQuery)
         {
-            _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
+            var workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _ItemInfo = new List<ItemInfo>();
 
-            foreach (var wi in _workItemResult)
+            foreach (var wi in workItemResult)
             {
                 string sAssignedTo = wi["Assigned To"].ToString();
                 _nameList.Add(sAssignedTo);
@@ -251,11 +310,11 @@ namespace TestTFS
 
         public void ExtractTaskList(string sQuery)
         {
-            _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
+            var workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _ItemInfo = new List<ItemInfo>();
 
-            foreach (var wi in _workItemResult)
+            foreach (var wi in workItemResult)
             {
                 string sAssignedTo = wi["Assigned To"].ToString();
                 _nameList.Add(sAssignedTo);
@@ -295,11 +354,11 @@ namespace TestTFS
 
         public void ExtractResolveInfo(string sQuery)
         {
-            _workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
+            var workItemResult = _workItemStore.Query(sQuery).Cast<WorkItem>();
 
             _ResolveResult = new List<ResolveInfo>();
 
-            foreach (var wi in _workItemResult)
+            foreach (var wi in workItemResult)
             {
                 string sResolvedBy = wi["Resolved By"].ToString();
                 _nameList.Add(sResolvedBy);

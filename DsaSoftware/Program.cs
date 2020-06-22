@@ -14,7 +14,8 @@ namespace TestTFS
             {
                 UserName = "liangliang.pan",
                 Password = "1Antonio",
-                FileName = args[0]
+                FileName = args[0],
+                FileNameModule = args[1]
             };
 
             string sQueryAllUR = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] = '1-CMTC' ORDER BY [XR.UModule] desc";
@@ -34,6 +35,7 @@ namespace TestTFS
             tfsTracker.ExtractURQueryInfo(sQueryAllUR);
 
             tfsTracker.WriteUR2Excel();
+            tfsTracker.WriteUrByModule();
 
             tfsTracker.ExtractTaskQueryInfo(sQueryAllTask);
 
