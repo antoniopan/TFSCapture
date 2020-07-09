@@ -1,0 +1,6 @@
+E:/Tracker/DSA_Software_Daily_Tracker.htm
+E:/Tracker/DSA_Software_Daily_Tracker_v1.htm
+E:/Tracker/temp.xlsx
+E:/Code/CSharp/TFSCapture/MailSync/DSA_Software_Daily_Tracker_Module.htm
+E:/Code/CSharp/TFSCapture/MailSync/DSA_Software_Daily_Tracker_Module_v1.htm
+E:/Tracker/module.xlsx
