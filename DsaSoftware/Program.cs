@@ -42,22 +42,22 @@ namespace TestTFS
 
             tfsTracker.WriteTask2Excel();
 
-            tfsTracker.ExtractURList(sQueryExpiredUR);
-            tfsTracker.SortItem();
-            tfsTracker.WriteExcelIndex(3);
+            //tfsTracker.ExtractURList(sQueryExpiredUR);
+            //tfsTracker.SortItem();
+            //tfsTracker.WriteExcelIndex(3);
 
-            tfsTracker.ExtractURList(sQueryUnPlannedUR);
-            tfsTracker.SortItem();
-            tfsTracker.WriteExcelIndex(4);
+            //tfsTracker.ExtractURList(sQueryUnPlannedUR);
+            //tfsTracker.SortItem();
+            //tfsTracker.WriteExcelIndex(4);
 
             tfsTracker.ExtractTaskList(sQueryP1Task);
             tfsTracker.WriteExcelIndex(5);
 
-            tfsTracker.ExtractTaskList(sQueryUnReviewedTask);
-            tfsTracker.WriteExcelIndex(6);
+            //tfsTracker.ExtractTaskList(sQueryUnReviewedTask);
+            //tfsTracker.WriteExcelIndex(6);
 
-            tfsTracker.ExtractResolveInfo(sQueryURThisWeek);
-            tfsTracker.WriteResolveIndex(7);
+            //tfsTracker.ExtractResolveInfo(sQueryURThisWeek);
+            //tfsTracker.WriteResolveIndex(7);
 
             tfsTracker.ExtractResolveInfo(sQueryTaskThisWeek);
             tfsTracker.WriteResolveIndex(8);
