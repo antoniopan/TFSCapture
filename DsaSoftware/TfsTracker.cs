@@ -368,7 +368,8 @@ namespace TestTFS
                     Title = wi.Title,
                     ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
                     NodeName = wi.NodeName,
-                    ResolvedBy = sResolvedBy.Substring(0, sResolvedBy.IndexOf('_'))
+                    ResolvedBy = sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')),
+                    Reserved = wi["Reserved"].ToString()
                 });
             }
 
@@ -389,6 +390,7 @@ namespace TestTFS
                     sheet.Cells[i, 3] = item.ResolvedDate;
                     sheet.Cells[i, 4] = item.NodeName;
                     sheet.Cells[i, 5] = item.ResolvedBy;
+                    sheet.Cells[i, 6] = item.Reserved;
                     i += 1;
                 }
             }

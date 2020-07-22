@@ -69,5 +69,7 @@ namespace TestTFS
         public string ResolvedBy { get; set; }
 
         public DateTime ResolvedDate { get; set; }
+
+        public string Reserved { get; set; }
     }
 }
