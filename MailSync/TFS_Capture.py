@@ -29,36 +29,36 @@ def modify_html(src_htm, dst_htm, src_xls, option):
     taskThisWeek = xls.sheet_by_index(7)
 
     # 读取User Requirement
-    fill_html_with_blank_row(tables[0], urSheet.nrows + 1)
-    sync_xls_html(urSheet, tables[0])
+    #fill_html_with_blank_row(tables[0], urSheet.nrows + 1)
+    #sync_xls_html(urSheet, tables[0])
 
     # 读取Task
-    fill_html_with_blank_row(tables[1], taskSheet.nrows + 1)
-    sync_xls_html(taskSheet, tables[1])
+    fill_html_with_blank_row(tables[0], taskSheet.nrows + 1)
+    sync_xls_html(taskSheet, tables[0])
 
     # 读取本周UR
-    fill_html_with_blank_row(tables[2], urThisWeek.nrows)
-    fill_html_from_sheet(urThisWeek, tables[2])
+    #fill_html_with_blank_row(tables[2], urThisWeek.nrows)
+    #fill_html_from_sheet(urThisWeek, tables[2])
 
     # 读取本周Task
-    fill_html_with_blank_row(tables[3], taskThisWeek.nrows)
-    fill_html_from_sheet(taskThisWeek, tables[3])
+    fill_html_with_blank_row(tables[1], taskThisWeek.nrows)
+    fill_html_from_sheet(taskThisWeek, tables[1])
 
     # 读取Expired UR
-    fill_html_with_blank_row(tables[4], urExpiredSheet.nrows)
-    fill_html_from_sheet(urExpiredSheet, tables[4])
+    #fill_html_with_blank_row(tables[4], urExpiredSheet.nrows)
+    #fill_html_from_sheet(urExpiredSheet, tables[4])
 
     # 读取UnPlanned UR
-    fill_html_with_blank_row(tables[5], urUnPlannedSheet.nrows)
-    fill_html_from_sheet(urUnPlannedSheet, tables[5])
+    #fill_html_with_blank_row(tables[5], urUnPlannedSheet.nrows)
+    #fill_html_from_sheet(urUnPlannedSheet, tables[5])
 
     # 读取Expired Task
-    fill_html_with_blank_row(tables[6], taskExpiredSheet.nrows)
-    fill_html_from_sheet(taskExpiredSheet, tables[6])
+    fill_html_with_blank_row(tables[2], taskExpiredSheet.nrows)
+    fill_html_from_sheet(taskExpiredSheet, tables[2])
 
     # 读取UnReviewed Task
-    fill_html_with_blank_row(tables[7], taskUnReviewedSheet.nrows)
-    fill_html_from_sheet(taskUnReviewedSheet, tables[7])
+    #fill_html_with_blank_row(tables[7], taskUnReviewedSheet.nrows)
+    #fill_html_from_sheet(taskUnReviewedSheet, tables[7])
 
     if option == 0:
         f = open(u'E:/Tracker/name.txt', 'r')
@@ -69,7 +69,7 @@ def modify_html(src_htm, dst_htm, src_xls, option):
         mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
         mail.Recipients.Add('HSW_DSA')
-        mail.CC = 'qianqian.yu_XR; baojian.wang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
+        mail.CC = 'jun.xiang_XR; qianqian.yu_XR; jinpeng.jiang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
         mail.Subject = 'DSA软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.BodyFormat = 2
         attachment = mail.Attachments.Add("E:/DSA_Software/image002.png")
@@ -235,6 +235,9 @@ def fill_html_from_sheet(sheet, table):
         # ExpectedSolvedDate
         if len(cols) > 4:
             s = cols[4].find('span')
+            s.string = sheet.cell(i, 5).value
+        if len(cols) > 5:
+            s = cols[5].find('span')
             v = sheet.cell(i, 2).value
             if v != '':
                 s.string = str(xlrd.xldate_as_datetime(v, 0).strftime('%y-%m-%d'))
@@ -248,7 +251,7 @@ if __name__ == '__main__':
         lines = f.read().splitlines()
         day = datetime.date.today().isoweekday()
         # option 0 发邮件，option 1 更新html
-        update_module_html(lines[3], lines[4], lines[5], 0)
+        modify_html(lines[0], lines[1], lines[2], 0)
     else:
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
