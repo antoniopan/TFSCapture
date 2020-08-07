@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Xml;
 using System.Text;
 using System.IO;
+using Microsoft.TeamFoundation.Client.Reporting;
 
 namespace TestTFS
 {
@@ -26,17 +27,17 @@ namespace TestTFS
 
         private WorkItemStore _workItemStore;
 
-        private Dictionary<string, Dictionary<string, UserRequirementState>> _UrbyModule;
+        private Dictionary<string, Dictionary<string, UserRequirementState>> _UrbyModule; // NodeName --> uModule --> UR State
 
         //private IEnumerable<WorkItem> _workItemResult;
 
-        private Dictionary<string, UserRequirementState> _UrResult;
+        private Dictionary<string, UserRequirementState> _UrResult; // Convert UR Query into Customized data structure in table form
 
-        private Dictionary<string, TaskState> _taskResult;
+        private Dictionary<string, TaskState> _taskResult; // Convert Task Query into Customized data structure in table form
 
-        private List<ItemInfo> _ItemInfo;
+        private List<ItemInfo> _ItemInfo; // Convert either UR or Task Query into a list, usually to be resolved
 
-        private List<ResolveInfo> _ResolveResult;
+        private List<ResolveInfo> _ResolveResult; // Convert either UR or Task Query into a list, usually resolved
 
         private readonly Application _xlApp;
 
@@ -56,14 +57,6 @@ namespace TestTFS
             };
 
             _xlsWorkbook = _xlApp.Workbooks.Add(true);
-
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
-            _xlsWorkbook.Worksheets.Add(Missing.Value);
 
             _xlsWorkbookModule = _xlApp.Workbooks.Add(true);
 
@@ -164,11 +157,13 @@ namespace TestTFS
             }
         }
 
-        public void WriteUR2Excel()
+        public void WriteUR2Excel(string sSheetName)
         {
             try
             {
-                Worksheet sheet = _xlsWorkbook.Worksheets[1];
+                _xlsWorkbook.Worksheets.Add(Missing.Value);
+                _xlsWorkbook.ActiveSheet.Name = sSheetName;
+                Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
                 foreach (var item in _UrResult)
@@ -263,11 +258,13 @@ namespace TestTFS
             }
         }
 
-        public void WriteTask2Excel()
+        public void WriteTask2Excel(string sSheetName)
         {
             try
             {
-                Worksheet sheet = _xlsWorkbook.Worksheets[2];
+                _xlsWorkbook.Worksheets.Add(Missing.Value);
+                _xlsWorkbook.ActiveSheet.Name = sSheetName;
+                Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
                 foreach (var item in _taskResult)
@@ -329,11 +326,13 @@ namespace TestTFS
             }
         }
 
-        public void WriteExcelIndex(int n)
+        public void WriteExcelItemList(string sSheetName)
         {
             try
             {
-                Worksheet sheet = _xlsWorkbook.Worksheets[n];
+                _xlsWorkbook.Worksheets.Add(Missing.Value);
+                _xlsWorkbook.ActiveSheet.Name = sSheetName;
+                Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
                 foreach (var item in _ItemInfo)
@@ -369,18 +368,20 @@ namespace TestTFS
                     ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
                     NodeName = wi.NodeName,
                     ResolvedBy = sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')),
-                    Reserved = wi["Reserved"].ToString()
+                    Reserved = (wi.Type.Name == "Task") ? wi["Reserved"].ToString() : ""
                 });
             }
 
             _ResolveResult.Sort((ResolveInfo x, ResolveInfo y) => x.ResolvedDate.CompareTo(y.ResolvedDate));
         }
 
-        public void WriteResolveIndex(int n)
+        public void WriteResolveItemList(string sSheetName)
         {
             try
             {
-                Worksheet sheet = _xlsWorkbook.Worksheets[n];
+                _xlsWorkbook.Worksheets.Add(Missing.Value);
+                _xlsWorkbook.ActiveSheet.Name = sSheetName;
+                Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
                 foreach (var item in _ResolveResult)
