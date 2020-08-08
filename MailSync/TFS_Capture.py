@@ -78,7 +78,7 @@ def modify_html(src_htm, dst_htm, src_xls, option):
         mail.CC = 'jun.xiang_XR; qianqian.yu_XR; jinpeng.jiang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
         mail.Subject = 'DSA软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.BodyFormat = 2
-        attachment = mail.Attachments.Add("E:/DSA_Software/image002.png")
+        attachment = mail.Attachments.Add("E:/Code/TFSCapture/MailSync/ProjectPlan.png")
         attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "ID001")
         attachment = mail.Attachments.Add("E:/DSA_Software/image004.png")
         attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "ID002")
@@ -124,10 +124,10 @@ def update_module_html(srcHtml, dstHtml, srcXls, option):
         f.close()
         outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)
-        mail.To = s_name
+        #mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
-        mail.Recipients.Add('HSW_DSA')
-        mail.CC = 'qianqian.yu_XR; baojian.wang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
+        #mail.Recipients.Add('HSW_DSA')
+        #mail.CC = 'qianqian.yu_XR; baojian.wang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
         mail.Subject = 'DSA软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.BodyFormat = 2
         attachment = mail.Attachments.Add("E:/DSA_Software/image002.png")
