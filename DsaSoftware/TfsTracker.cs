@@ -247,6 +247,12 @@ namespace TestTFS
                             _taskResult[sNodeName].Verified += 1;
                             break;
                         }
+                    case "Observation":
+                    case "Reject":
+                        {
+                            _taskResult[sNodeName].Other += 1;
+                            break;
+                        }
                 }
             }
 

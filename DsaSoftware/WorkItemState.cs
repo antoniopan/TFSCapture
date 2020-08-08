@@ -33,6 +33,8 @@ namespace TestTFS
 
         public int Verified { get; set; }
 
+        public int Other { get; set; }
+
         public int Total { get; set; }
 
         public string Percentage { get; set; }
@@ -42,6 +44,7 @@ namespace TestTFS
             Assigned = 0;
             Resolved = 0;
             Verified = 0;
+            Other    = 0;
         }
     }
 
