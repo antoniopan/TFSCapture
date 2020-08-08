@@ -232,6 +232,8 @@ namespace TestTFS
                 {
                     case "New":
                     case "Assigned":
+                    case "Observation":
+                    case "Reject":
                         {
                             _taskResult[sNodeName].Assigned += 1;
                             break;
@@ -247,18 +249,16 @@ namespace TestTFS
                             _taskResult[sNodeName].Verified += 1;
                             break;
                         }
-                    case "Observation":
-                    case "Reject":
-                        {
-                            _taskResult[sNodeName].Other += 1;
-                            break;
-                        }
+                        //{
+                        //    _taskResult[sNodeName].Other += 1;
+                        //    break;
+                        //}
                 }
             }
 
             foreach (var item in _taskResult)
             {
-                item.Value.Total = item.Value.Assigned + item.Value.Resolved + item.Value.Verified;
+                item.Value.Total = item.Value.Assigned + item.Value.Resolved + item.Value.Verified + item.Value.Other;
                 double dPercentage = Convert.ToDouble(item.Value.Resolved + item.Value.Verified) / Convert.ToDouble(item.Value.Total);
                 item.Value.Percentage = String.Format("{0:P0}", dPercentage);
             }
@@ -279,8 +279,9 @@ namespace TestTFS
                     sheet.Cells[i, 2] = item.Value.Assigned.ToString();
                     sheet.Cells[i, 3] = item.Value.Resolved.ToString();
                     sheet.Cells[i, 4] = item.Value.Verified.ToString();
-                    sheet.Cells[i, 5] = item.Value.Total.ToString();
-                    sheet.Cells[i, 6] = item.Value.Percentage;
+                    sheet.Cells[i, 5] = item.Value.Other.ToString();
+                    sheet.Cells[i, 6] = item.Value.Total.ToString();
+                    sheet.Cells[i, 7] = item.Value.Percentage;
                     i += 1;
                 }
             }
