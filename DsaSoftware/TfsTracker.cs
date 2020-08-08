@@ -279,9 +279,8 @@ namespace TestTFS
                     sheet.Cells[i, 2] = item.Value.Assigned.ToString();
                     sheet.Cells[i, 3] = item.Value.Resolved.ToString();
                     sheet.Cells[i, 4] = item.Value.Verified.ToString();
-                    sheet.Cells[i, 5] = item.Value.Other.ToString();
-                    sheet.Cells[i, 6] = item.Value.Total.ToString();
-                    sheet.Cells[i, 7] = item.Value.Percentage;
+                    sheet.Cells[i, 5] = item.Value.Total.ToString();
+                    sheet.Cells[i, 6] = item.Value.Percentage;
                     i += 1;
                 }
             }
@@ -375,7 +374,7 @@ namespace TestTFS
                     ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
                     NodeName = wi.NodeName,
                     ResolvedBy = sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')),
-                    Reserved = (wi.Type.Name == "Task") ? wi["Reserved"].ToString() : ""
+                    Reserved = (wi.Type.Name == "Task") ? wi["Reserved"].ToString() : wi["uAttribute"].ToString()
                 });
             }
 
