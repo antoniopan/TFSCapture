@@ -19,12 +19,6 @@ def modify_html(src_htm, dst_htm, src_xls, option):
     tables = soup.find_all('table')
 
     xls = xlrd.open_workbook(src_xls)
-    urExpiredSheet = xls.sheet_by_index(2)
-    urUnPlannedSheet = xls.sheet_by_index(3)
-    taskExpiredSheet = xls.sheet_by_index(4)
-    taskUnReviewedSheet = xls.sheet_by_index(5)
-    urThisWeek = xls.sheet_by_index(6)
-    taskThisWeek = xls.sheet_by_index(7)
 
     # 读取User Requirement
     #fill_html_with_blank_row(tables[0], urSheet.nrows + 1)
