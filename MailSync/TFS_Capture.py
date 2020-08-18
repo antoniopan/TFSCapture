@@ -31,7 +31,7 @@ def modify_html(src_htm, dst_htm, src_xls, option):
 
     # 读取Task
     task_sheet = xls.sheet_by_name("Task Table")
-    fill_html_with_blank_row(tables[1], task_sheet.nrows + 1)
+    fill_html_with_blank_row(tables[1], task_sheet.nrows)
     sync_xls_html(task_sheet, tables[1])
 
     # 读取本周Task
@@ -41,12 +41,12 @@ def modify_html(src_htm, dst_htm, src_xls, option):
 
     # 读取CMTC UR
     ur_cmtc = xls.sheet_by_name("UR CMTC Table")
-    fill_html_with_blank_row(tables[3], ur_cmtc.nrows + 1)
+    fill_html_with_blank_row(tables[3], ur_cmtc.nrows)
     sync_xls_html(ur_cmtc, tables[3])
 
     # 读取临床 UR
     ur_clinical = xls.sheet_by_name("UR Clinical Table")
-    fill_html_with_blank_row(tables[4], ur_clinical.nrows + 1)
+    fill_html_with_blank_row(tables[4], ur_clinical.nrows)
     sync_xls_html(ur_clinical, tables[4])
 
     # 读取本周UR
@@ -145,7 +145,7 @@ def update_module_html(srcHtml, dstHtml, srcXls, option):
 def sync_xls_html(sheet, table):
     # 读取User Requirement
     rows = table.find_all('tr')
-    if len(rows) - sheet.nrows != 2:
+    if len(rows) - sheet.nrows != 1:
         return
 
     # Copy xls to html
@@ -156,43 +156,18 @@ def sync_xls_html(sheet, table):
         # 模块
         s = cols[0].find_all('span')
         s[0].string = sheet.cell(i, 0).value
-        # 待解决
-        s = cols[1].find_all('span')
-        s[0].string = str(int(sheet.cell(i, 1).value))
-        # 待验证
-        s = cols[2].find_all('span')
-        s[0].string = str(int(sheet.cell(i, 2).value))
-        # 已验证
-        s = cols[3].find_all('span')
-        s[0].string = str(int(sheet.cell(i, 3).value))
-        # 总和
-        s = cols[4].find_all('span')
-        s[0].string = str(int(sheet.cell(i, 4).value))
-        # 解决率
-        s = cols[5].find_all('span')
-        s[0].string = '%.0f%%' % (sheet.cell(i, 5).value * 100)
+        for k in range(1, len(cols)-1):
+            s = cols[k].find_all('span')
+            s[0].string = str(int(sheet.cell(i, k).value))
+
+        k = len(cols) - 1
+        s = cols[k].find_all('span')
+        d_percentage = (sheet.cell(i, k - 3).value + sheet.cell(i, k - 2).value) / sheet.cell(i, k - 1).value
+        s[0].string = '%.0f%%' % (d_percentage * 100)
 
         new = new + int(sheet.cell(i, 1).value)
         resolved = resolved + int(sheet.cell(i, 2).value)
         verified = verified + int(sheet.cell(i, 3).value)
-
-    # 最后一行，统计
-    cols = rows[len(rows) - 1].find_all('td')
-    # 待解决
-    s = cols[1].find_all('span')
-    s[0].string = str(new)
-    # 待验证
-    s = cols[2].find_all('span')
-    s[0].string = str(resolved)
-    # 已验证
-    s = cols[3].find_all('span')
-    s[0].string = str(verified)
-    # 总和
-    s = cols[4].find_all('span')
-    s[0].string = str(new + resolved + verified)
-    # 解决率
-    s = cols[5].find_all('span')
-    s[0].string = '%.0f%%' % (float(resolved + verified) * 100 / (new + resolved + verified))
 
 
 def fill_html_with_blank_row(table, nrows):
@@ -262,4 +237,4 @@ if __name__ == '__main__':
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
         modify_html(lines[0], lines[1], lines[2], 1)
-        update_module_html(lines[3], lines[4], lines[5], 1)
+        #update_module_html(lines[3], lines[4], lines[5], 1)

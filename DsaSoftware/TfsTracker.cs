@@ -125,6 +125,11 @@ namespace TestTFS
                 switch (wi.State)
                 {
                     case "10-Requirement":
+                        {
+                            _UrResult[sNodeName].ToBeReviewed += 1;
+                            _UrbyModule[sNodeName][sUModule].ToBeReviewed += 1;
+                            break;
+                        }
                     case "20-Solution":
                     case "30-Development":
                         {
@@ -151,10 +156,12 @@ namespace TestTFS
 
             foreach (var item in _UrResult)
             {
-                item.Value.TotalNumber = item.Value.ToBeDeveloped + item.Value.ToBeVerified + item.Value.Verified;
+                item.Value.TotalNumber = item.Value.ToBeReviewed + item.Value.ToBeDeveloped + item.Value.ToBeVerified + item.Value.Verified;
                 double dPercentage = Convert.ToDouble(item.Value.ToBeVerified + item.Value.Verified) / Convert.ToDouble(item.Value.TotalNumber);
                 item.Value.DevelopPercentage = String.Format("{0:P0}", dPercentage);
             }
+
+            _UrResult = _UrResult.OrderBy(p => p.Key).ToDictionary(p => p.Key, o => o.Value);
         }
 
         public void WriteUR2Excel(string sSheetName)
@@ -166,16 +173,32 @@ namespace TestTFS
                 Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
+                var _summaryUR = new UserRequirementState();
                 foreach (var item in _UrResult)
                 {
                     sheet.Cells[i, 1] = item.Key;
-                    sheet.Cells[i, 2] = item.Value.ToBeDeveloped.ToString();
-                    sheet.Cells[i, 3] = item.Value.ToBeVerified.ToString();
-                    sheet.Cells[i, 4] = item.Value.Verified.ToString();
-                    sheet.Cells[i, 5] = item.Value.TotalNumber.ToString();
-                    sheet.Cells[i, 6] = item.Value.DevelopPercentage;
+                    sheet.Cells[i, 2] = item.Value.ToBeReviewed.ToString();
+                    sheet.Cells[i, 3] = item.Value.ToBeDeveloped.ToString();
+                    sheet.Cells[i, 4] = item.Value.ToBeVerified.ToString();
+                    sheet.Cells[i, 5] = item.Value.Verified.ToString();
+                    sheet.Cells[i, 6] = item.Value.TotalNumber.ToString();
+                    sheet.Cells[i, 7] = item.Value.DevelopPercentage;
+                    _summaryUR.ToBeReviewed += item.Value.ToBeReviewed;
+                    _summaryUR.ToBeDeveloped += item.Value.ToBeDeveloped;
+                    _summaryUR.ToBeVerified += item.Value.ToBeVerified;
+                    _summaryUR.Verified += item.Value.Verified;
+                    _summaryUR.TotalNumber += item.Value.TotalNumber;
                     i++;
                 }
+
+                sheet.Cells[i, 1] = @"总计";
+                sheet.Cells[i, 2] = _summaryUR.ToBeReviewed.ToString();
+                sheet.Cells[i, 3] = _summaryUR.ToBeDeveloped.ToString();
+                sheet.Cells[i, 4] = _summaryUR.ToBeVerified.ToString();
+                sheet.Cells[i, 5] = _summaryUR.Verified.ToString();
+                sheet.Cells[i, 6] = _summaryUR.TotalNumber.ToString();
+                double dPercentage = Convert.ToDouble(_summaryUR.ToBeVerified + _summaryUR.Verified) / Convert.ToDouble(_summaryUR.TotalNumber);
+                sheet.Cells[i, 7] = String.Format("{0:P0}", dPercentage);
             }
             catch (Exception e)
             {
@@ -204,11 +227,12 @@ namespace TestTFS
                     item.Value.DevelopPercentage = String.Format("{0:P0}", dPercentage);
 
                     sheet.Cells[j, 1] = item.Key;
-                    sheet.Cells[j, 2] = item.Value.ToBeDeveloped.ToString();
-                    sheet.Cells[j, 3] = item.Value.ToBeVerified.ToString();
-                    sheet.Cells[j, 4] = item.Value.Verified.ToString();
-                    sheet.Cells[j, 5] = item.Value.TotalNumber.ToString();
-                    sheet.Cells[j, 6] = item.Value.DevelopPercentage;
+                    sheet.Cells[j, 2] = item.Value.ToBeReviewed.ToString();
+                    sheet.Cells[j, 3] = item.Value.ToBeDeveloped.ToString();
+                    sheet.Cells[j, 4] = item.Value.ToBeVerified.ToString();
+                    sheet.Cells[j, 5] = item.Value.Verified.ToString();
+                    sheet.Cells[j, 6] = item.Value.TotalNumber.ToString();
+                    sheet.Cells[j, 7] = item.Value.DevelopPercentage;
 
                     j++;
                 }
@@ -249,19 +273,17 @@ namespace TestTFS
                             _taskResult[sNodeName].Verified += 1;
                             break;
                         }
-                        //{
-                        //    _taskResult[sNodeName].Other += 1;
-                        //    break;
-                        //}
                 }
             }
 
             foreach (var item in _taskResult)
             {
-                item.Value.Total = item.Value.Assigned + item.Value.Resolved + item.Value.Verified + item.Value.Other;
+                item.Value.Total = item.Value.Assigned + item.Value.Resolved + item.Value.Verified;
                 double dPercentage = Convert.ToDouble(item.Value.Resolved + item.Value.Verified) / Convert.ToDouble(item.Value.Total);
                 item.Value.Percentage = String.Format("{0:P0}", dPercentage);
             }
+
+            _taskResult = _taskResult.OrderBy(p => p.Key).ToDictionary(p => p.Key, o => o.Value);
         }
 
         public void WriteTask2Excel(string sSheetName)
@@ -273,6 +295,7 @@ namespace TestTFS
                 Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
+                var _summaryTask = new TaskState();
                 foreach (var item in _taskResult)
                 {
                     sheet.Cells[i, 1] = item.Key;
@@ -281,8 +304,19 @@ namespace TestTFS
                     sheet.Cells[i, 4] = item.Value.Verified.ToString();
                     sheet.Cells[i, 5] = item.Value.Total.ToString();
                     sheet.Cells[i, 6] = item.Value.Percentage;
+                    _summaryTask.Assigned += item.Value.Assigned;
+                    _summaryTask.Resolved += item.Value.Resolved;
+                    _summaryTask.Verified += item.Value.Verified;
+                    _summaryTask.Total += item.Value.Total;
                     i += 1;
                 }
+                sheet.Cells[i, 1] = @"总计";
+                sheet.Cells[i, 2] = _summaryTask.Assigned.ToString();
+                sheet.Cells[i, 3] = _summaryTask.Resolved.ToString();
+                sheet.Cells[i, 4] = _summaryTask.Verified.ToString();
+                sheet.Cells[i, 5] = _summaryTask.Total.ToString();
+                double dPercentage = Convert.ToDouble(_summaryTask.Resolved + _summaryTask.Verified) / Convert.ToDouble(_summaryTask.Total);
+                sheet.Cells[i, 6] = String.Format("{0:P0}", dPercentage);
             }
             catch (Exception e)
             {

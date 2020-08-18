@@ -7,6 +7,8 @@ namespace TestTFS
 {
     class UserRequirementState
     {
+        public int ToBeReviewed { get; set; }
+
         public int ToBeDeveloped { get; set; }
 
         public int ToBeVerified { get; set; }
@@ -19,6 +21,7 @@ namespace TestTFS
 
         public UserRequirementState()
         {
+            ToBeReviewed = 0;
             ToBeDeveloped = 0;
             ToBeVerified = 0;
             Verified = 0;
@@ -33,8 +36,6 @@ namespace TestTFS
 
         public int Verified { get; set; }
 
-        public int Other { get; set; }
-
         public int Total { get; set; }
 
         public string Percentage { get; set; }
@@ -44,7 +45,6 @@ namespace TestTFS
             Assigned = 0;
             Resolved = 0;
             Verified = 0;
-            Other    = 0;
         }
     }
 
