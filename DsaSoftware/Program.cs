@@ -42,8 +42,8 @@ namespace TestTFS
             tfsTracker.ExtractResolveInfo(sQueryTaskResolvedThisWeek);
             tfsTracker.WriteResolveItemList("Task This Week");
 
-            tfsTracker.ExtractResolveInfo(sQueryTaskCreatedThisWeek);
-            tfsTracker.WriteResolveItemList("Task Created This Week");
+            tfsTracker.ExtractTaskList(sQueryTaskCreatedThisWeek);
+            tfsTracker.WriteExcelItemList("Task Created This Week");
 
             tfsTracker.ExtractURQueryInfo(sQueryCMTCUR);
             tfsTracker.WriteUR2Excel("UR CMTC Table");

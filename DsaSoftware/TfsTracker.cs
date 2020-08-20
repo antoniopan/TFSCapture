@@ -354,6 +354,7 @@ namespace TestTFS
             foreach (var wi in workItemResult)
             {
                 string sAssignedTo = wi["Assigned To"].ToString();
+                int iIndex = sAssignedTo.IndexOf('_');
                 _nameList.Add(sAssignedTo);
                 _ItemInfo.Add(new ItemInfo()
                 {
@@ -361,7 +362,7 @@ namespace TestTFS
                     Title = wi.Title,
                     ExpectedSolvedDate = (wi["Expected Solved Date"] == null) ? "" : wi["Expected Solved Date"].ToString(),
                     NodeName = wi.NodeName,
-                    AssignedTo = sAssignedTo.Substring(0, sAssignedTo.IndexOf('_'))
+                    AssignedTo = iIndex > 0 ? sAssignedTo.Substring(0, sAssignedTo.IndexOf('_')) : sAssignedTo
                 });
             }
         }
@@ -400,6 +401,7 @@ namespace TestTFS
             foreach (var wi in workItemResult)
             {
                 string sResolvedBy = wi["Resolved By"].ToString();
+                int iIndex = sResolvedBy.IndexOf('_');
                 _nameList.Add(sResolvedBy);
                 _ResolveResult.Add(new ResolveInfo()
                 {
@@ -407,7 +409,7 @@ namespace TestTFS
                     Title = wi.Title,
                     ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
                     NodeName = wi.NodeName,
-                    ResolvedBy = sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')),
+                    ResolvedBy = iIndex > 0 ? sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')) : "",
                     Reserved = (wi.Type.Name == "Task") ? wi["Reserved"].ToString() : wi["uAttribute"].ToString()
                 });
             }
