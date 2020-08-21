@@ -115,7 +115,7 @@ def update_module_html(srcHtml, dstHtml, srcXls, option):
         while header == '\n':
             header = header.previous_sibling
         header.span.string = "%s完成情况" % xls_sheet.name
-        fill_html_with_blank_row(table, xls_sheet.nrows + 1)
+        fill_html_with_blank_row(table, xls_sheet.nrows)
         sync_xls_html(xls_sheet, table)
 
     if option == 0:
@@ -237,4 +237,4 @@ if __name__ == '__main__':
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
         modify_html(lines[0], lines[1], lines[2], 1)
-        #update_module_html(lines[3], lines[4], lines[5], 1)
+        update_module_html(lines[3], lines[4], lines[5], 1)
