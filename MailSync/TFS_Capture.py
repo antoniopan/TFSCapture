@@ -135,7 +135,7 @@ def update_module_html(srcHtml, dstHtml, srcXls, option):
         attachment = mail.Attachments.Add("E:/DSA_Software/image004.png")
         attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "ID002")
         mail.HTMLBody = soup.prettify()
-        mail.Send()
+        #mail.Send()
     elif option == 1:
         f = open(dstHtml, 'w', encoding='utf-8')
         f.write(soup.prettify())
