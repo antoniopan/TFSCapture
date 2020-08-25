@@ -162,6 +162,7 @@ namespace TestTFS
             }
 
             _UrResult = _UrResult.OrderBy(p => p.Key).ToDictionary(p => p.Key, o => o.Value);
+            _UrbyModule = _UrbyModule.OrderBy(p => p.Key).ToDictionary(p => p.Key, o => o.Value);
         }
 
         public void WriteUR2Excel(string sSheetName)
@@ -173,7 +174,7 @@ namespace TestTFS
                 Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
-                var _summaryUR = new UserRequirementState();
+                var summaryUR = new UserRequirementState();
                 foreach (var item in _UrResult)
                 {
                     sheet.Cells[i, 1] = item.Key;
@@ -183,21 +184,21 @@ namespace TestTFS
                     sheet.Cells[i, 5] = item.Value.Verified.ToString();
                     sheet.Cells[i, 6] = item.Value.TotalNumber.ToString();
                     sheet.Cells[i, 7] = item.Value.DevelopPercentage;
-                    _summaryUR.ToBeReviewed += item.Value.ToBeReviewed;
-                    _summaryUR.ToBeDeveloped += item.Value.ToBeDeveloped;
-                    _summaryUR.ToBeVerified += item.Value.ToBeVerified;
-                    _summaryUR.Verified += item.Value.Verified;
-                    _summaryUR.TotalNumber += item.Value.TotalNumber;
+                    summaryUR.ToBeReviewed += item.Value.ToBeReviewed;
+                    summaryUR.ToBeDeveloped += item.Value.ToBeDeveloped;
+                    summaryUR.ToBeVerified += item.Value.ToBeVerified;
+                    summaryUR.Verified += item.Value.Verified;
+                    summaryUR.TotalNumber += item.Value.TotalNumber;
                     i++;
                 }
 
                 sheet.Cells[i, 1] = @"总计";
-                sheet.Cells[i, 2] = _summaryUR.ToBeReviewed.ToString();
-                sheet.Cells[i, 3] = _summaryUR.ToBeDeveloped.ToString();
-                sheet.Cells[i, 4] = _summaryUR.ToBeVerified.ToString();
-                sheet.Cells[i, 5] = _summaryUR.Verified.ToString();
-                sheet.Cells[i, 6] = _summaryUR.TotalNumber.ToString();
-                double dPercentage = Convert.ToDouble(_summaryUR.ToBeVerified + _summaryUR.Verified) / Convert.ToDouble(_summaryUR.TotalNumber);
+                sheet.Cells[i, 2] = summaryUR.ToBeReviewed.ToString();
+                sheet.Cells[i, 3] = summaryUR.ToBeDeveloped.ToString();
+                sheet.Cells[i, 4] = summaryUR.ToBeVerified.ToString();
+                sheet.Cells[i, 5] = summaryUR.Verified.ToString();
+                sheet.Cells[i, 6] = summaryUR.TotalNumber.ToString();
+                double dPercentage = Convert.ToDouble(summaryUR.ToBeVerified + summaryUR.Verified) / Convert.ToDouble(summaryUR.TotalNumber);
                 sheet.Cells[i, 7] = String.Format("{0:P0}", dPercentage);
             }
             catch (Exception e)
@@ -220,9 +221,10 @@ namespace TestTFS
                 sheet.Name = urModule.Key;
                 
                 int j = 1;
+                var summaryUR = new UserRequirementState();
                 foreach (var item in urModule.Value)
                 {
-                    item.Value.TotalNumber = item.Value.ToBeDeveloped + item.Value.ToBeVerified + item.Value.Verified;
+                    item.Value.TotalNumber = item.Value.ToBeReviewed + item.Value.ToBeDeveloped + item.Value.ToBeVerified + item.Value.Verified;
                     double dPercentage = Convert.ToDouble(item.Value.ToBeVerified + item.Value.Verified) / Convert.ToDouble(item.Value.TotalNumber);
                     item.Value.DevelopPercentage = String.Format("{0:P0}", dPercentage);
 
@@ -234,8 +236,21 @@ namespace TestTFS
                     sheet.Cells[j, 6] = item.Value.TotalNumber.ToString();
                     sheet.Cells[j, 7] = item.Value.DevelopPercentage;
 
+                    summaryUR.ToBeReviewed += item.Value.ToBeReviewed;
+                    summaryUR.ToBeDeveloped += item.Value.ToBeDeveloped;
+                    summaryUR.ToBeVerified += item.Value.ToBeVerified;
+                    summaryUR.Verified += item.Value.Verified;
+                    summaryUR.TotalNumber += item.Value.TotalNumber;
                     j++;
                 }
+
+                sheet.Cells[j, 1] = @"总计";
+                sheet.Cells[j, 2] = summaryUR.ToBeReviewed.ToString();
+                sheet.Cells[j, 3] = summaryUR.ToBeDeveloped.ToString();
+                sheet.Cells[j, 4] = summaryUR.ToBeVerified.ToString();
+                sheet.Cells[j, 5] = summaryUR.Verified.ToString();
+                sheet.Cells[j, 6] = summaryUR.TotalNumber.ToString();
+                sheet.Cells[j, 7] = String.Format("{0:P0}", Convert.ToDouble(summaryUR.ToBeVerified + summaryUR.Verified) / Convert.ToDouble(summaryUR.TotalNumber));
             }
         }
 
