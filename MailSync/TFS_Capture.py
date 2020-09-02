@@ -25,34 +25,34 @@ def modify_html(src_htm, dst_htm, src_xls, option):
     #sync_xls_html(urSheet, tables[0])
 
     # 读取P1 Task
-    p1_task = xls.sheet_by_name("P1 Task List")
-    fill_html_with_blank_row(tables[0], p1_task.nrows)
-    fill_html_from_sheet(p1_task, tables[0])
+    #p1_task = xls.sheet_by_name("P1 Task List")
+    #fill_html_with_blank_row(tables[0], p1_task.nrows)
+    #fill_html_from_sheet(p1_task, tables[0])
 
     # 读取Task
     task_sheet = xls.sheet_by_name("Task Table")
-    fill_html_with_blank_row(tables[1], task_sheet.nrows)
-    sync_xls_html(task_sheet, tables[1])
+    fill_html_with_blank_row(tables[0], task_sheet.nrows)
+    sync_xls_html(task_sheet, tables[0])
 
     # 读取本周Task
     task_this_week = xls.sheet_by_name("Task This Week")
-    fill_html_with_blank_row(tables[2], task_this_week.nrows)
-    fill_html_from_sheet(task_this_week, tables[2])
+    fill_html_with_blank_row(tables[1], task_this_week.nrows)
+    fill_html_from_sheet(task_this_week, tables[1])
 
     # 读取CMTC UR
-    ur_cmtc = xls.sheet_by_name("UR CMTC Table")
-    fill_html_with_blank_row(tables[3], ur_cmtc.nrows)
-    sync_xls_html(ur_cmtc, tables[3])
+    ur_all = xls.sheet_by_name("UR Table")
+    fill_html_with_blank_row(tables[2], ur_all.nrows)
+    sync_xls_html(ur_all, tables[2])
 
     # 读取临床 UR
-    ur_clinical = xls.sheet_by_name("UR Clinical Table")
-    fill_html_with_blank_row(tables[4], ur_clinical.nrows)
-    sync_xls_html(ur_clinical, tables[4])
+    #ur_clinical = xls.sheet_by_name("UR Clinical Table")
+    #fill_html_with_blank_row(tables[4], ur_clinical.nrows)
+    #sync_xls_html(ur_clinical, tables[4])
 
     # 读取本周UR
     ur_this_week = xls.sheet_by_name("UR This Week")
-    fill_html_with_blank_row(tables[5], ur_this_week.nrows)
-    fill_html_from_sheet(ur_this_week, tables[5])
+    fill_html_with_blank_row(tables[3], ur_this_week.nrows)
+    fill_html_from_sheet(ur_this_week, tables[3])
 
     # 读取UnPlanned UR
     #fill_html_with_blank_row(tables[5], urUnPlannedSheet.nrows)
