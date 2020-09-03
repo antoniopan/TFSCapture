@@ -232,9 +232,9 @@ if __name__ == '__main__':
         lines = f.read().splitlines()
         day = datetime.date.today().isoweekday()
         # option 0 发邮件，option 1 更新html
-        modify_html(lines[0], lines[1], lines[2], 0)
+        modify_html(lines[0], lines[1], lines[2], lines[6], 0)
     else:
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
-        modify_html(lines[0], lines[1], lines[2], 1)
+        modify_html(lines[0], lines[1], lines[2], lines[6], 1)
         #update_module_html(lines[3], lines[4], lines[5], 1)
