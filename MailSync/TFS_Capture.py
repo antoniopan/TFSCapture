@@ -14,7 +14,7 @@ import datetime
 import win32com.client as win32
 
 
-def modify_html(src_htm, dst_htm, src_xls, option):
+def modify_html(src_htm, dst_htm, src_xls, img_dir, option):
     soup = bs4.BeautifulSoup(open(src_htm), features='html.parser')
     tables = soup.find_all('table')
 
@@ -78,9 +78,9 @@ def modify_html(src_htm, dst_htm, src_xls, option):
         mail.CC = 'jun.xiang_XR; qianqian.yu_XR; jinpeng.jiang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
         mail.Subject = 'DSA软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.BodyFormat = 2
-        attachment = mail.Attachments.Add("./img/ProjPlan.png")
+        attachment = mail.Attachments.Add("%s/ProjPlan.png" % img_dir)
         attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "ID001")
-        attachment = mail.Attachments.Add("./img/image004.png")
+        attachment = mail.Attachments.Add("%s/image004.png" % img_dir)
         attachment.PropertyAccessor.SetProperty("http://schemas.microsoft.com/mapi/proptag/0x3712001F", "ID002")
         mail.HTMLBody = soup.prettify()
         mail.Send()
