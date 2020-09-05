@@ -54,9 +54,10 @@ def modify_html(src_htm, dst_htm, src_xls, img_dir, option):
     fill_html_with_blank_row(tables[3], ur_this_week.nrows)
     fill_html_from_sheet(ur_this_week, tables[3])
 
-    # 读取UnPlanned UR
-    #fill_html_with_blank_row(tables[5], urUnPlannedSheet.nrows)
-    #fill_html_from_sheet(urUnPlannedSheet, tables[5])
+    # 读取Expired UR
+    urExpired = xls.sheet_by_name("Expired UR")
+    fill_html_with_blank_row(tables[4], urExpired.nrows)
+    fill_html_from_sheet(urExpired, tables[4])
 
     # 读取Expired Task
     #fill_html_with_blank_row(tables[2], taskExpiredSheet.nrows)
@@ -214,16 +215,17 @@ def fill_html_from_sheet(sheet, table):
         s = cols[3].find('span')
         s.string = sheet.cell(i, 4).value
         # ExpectedSolvedDate
-        if len(cols) > 4:
+        j = len(cols)
+        s = cols[j - 1].find('span')
+        v = sheet.cell(i, 2).value
+        if v != '':
+            s.string = str(xlrd.xldate_as_datetime(v, 0).strftime('%y-%m-%d'))
+        else:
+            s.string = ''
+        if len(cols) > 5:
             s = cols[4].find('span')
             s.string = sheet.cell(i, 5).value
-        if len(cols) > 5:
-            s = cols[5].find('span')
-            v = sheet.cell(i, 2).value
-            if v != '':
-                s.string = str(xlrd.xldate_as_datetime(v, 0).strftime('%y-%m-%d'))
-            else:
-                s.string = ''
+
 
 
 if __name__ == '__main__':
