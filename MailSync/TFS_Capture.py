@@ -12,9 +12,10 @@ import sys
 import time
 import datetime
 import win32com.client as win32
+import modify_table
 
 
-def modify_html(src_htm, dst_htm, src_xls, img_dir, option):
+def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     soup = bs4.BeautifulSoup(open(src_htm), features='html.parser')
     tables = soup.find_all('table')
 
@@ -31,18 +32,18 @@ def modify_html(src_htm, dst_htm, src_xls, img_dir, option):
 
     # 读取Task
     task_sheet = xls.sheet_by_name("Task Table")
-    fill_html_with_blank_row(tables[0], task_sheet.nrows)
-    sync_xls_html(task_sheet, tables[0])
+    modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
+    modify_table.sync_xls_html(task_sheet, tables[0])
 
     # 读取本周Task
     task_this_week = xls.sheet_by_name("Task This Week")
-    fill_html_with_blank_row(tables[1], task_this_week.nrows)
-    fill_html_from_sheet(task_this_week, tables[1])
+    modify_table.fill_html_with_blank_row(tables[1], task_this_week.nrows)
+    modify_table.fill_html_from_sheet(task_this_week, tables[1])
 
     # 读取CMTC UR
     ur_all = xls.sheet_by_name("UR Table")
-    fill_html_with_blank_row(tables[2], ur_all.nrows)
-    sync_xls_html(ur_all, tables[2])
+    modify_table.fill_html_with_blank_row(tables[2], ur_all.nrows)
+    modify_table.sync_xls_html(ur_all, tables[2])
 
     # 读取临床 UR
     #ur_clinical = xls.sheet_by_name("UR Clinical Table")
@@ -51,13 +52,13 @@ def modify_html(src_htm, dst_htm, src_xls, img_dir, option):
 
     # 读取本周UR
     ur_this_week = xls.sheet_by_name("UR This Week")
-    fill_html_with_blank_row(tables[3], ur_this_week.nrows)
-    fill_html_from_sheet(ur_this_week, tables[3])
+    modify_table.fill_html_with_blank_row(tables[3], ur_this_week.nrows)
+    modify_table.fill_html_from_sheet(ur_this_week, tables[3])
 
     # 读取Expired UR
     urExpired = xls.sheet_by_name("Expired UR")
-    fill_html_with_blank_row(tables[4], urExpired.nrows)
-    fill_html_from_sheet(urExpired, tables[4])
+    modify_table.fill_html_with_blank_row(tables[4], urExpired.nrows)
+    modify_table.fill_html_from_sheet(urExpired, tables[4])
 
     # 读取Expired Task
     #fill_html_with_blank_row(tables[2], taskExpiredSheet.nrows)
@@ -68,7 +69,7 @@ def modify_html(src_htm, dst_htm, src_xls, img_dir, option):
     #fill_html_from_sheet(taskUnReviewedSheet, tables[7])
 
     if option == 0:
-        f = open(u'E:/Tracker/name.txt', 'r')
+        f = open(name_file, 'r')
         s_name = f.read();
         f.close()
         outlook = win32.Dispatch('outlook.application')
@@ -116,8 +117,8 @@ def update_module_html(srcHtml, dstHtml, srcXls, option):
         while header == '\n':
             header = header.previous_sibling
         header.span.string = "%s完成情况" % xls_sheet.name
-        fill_html_with_blank_row(table, xls_sheet.nrows)
-        sync_xls_html(xls_sheet, table)
+        modify_table.fill_html_with_blank_row(table, xls_sheet.nrows)
+        modify_table.sync_xls_html(xls_sheet, table)
 
     if option == 0:
         f = open(u'E:/Tracker/name.txt', 'r')
@@ -143,100 +144,15 @@ def update_module_html(srcHtml, dstHtml, srcXls, option):
         f.close()
 
 
-def sync_xls_html(sheet, table):
-    # 读取User Requirement
-    rows = table.find_all('tr')
-    if len(rows) - sheet.nrows != 1:
-        return
-
-    # Copy xls to html
-    new = resolved = verified = 0
-    for i in range(0, sheet.nrows):
-        j = i + 1
-        cols = rows[j].find_all('td')
-        # 模块
-        s = cols[0].find_all('span')
-        s[0].string = sheet.cell(i, 0).value
-        for k in range(1, len(cols)-1):
-            s = cols[k].find_all('span')
-            s[0].string = str(int(sheet.cell(i, k).value))
-
-        k = len(cols) - 1
-        s = cols[k].find_all('span')
-        d_percentage = (sheet.cell(i, k - 3).value + sheet.cell(i, k - 2).value) / sheet.cell(i, k - 1).value
-        s[0].string = '%.0f%%' % (d_percentage * 100)
-
-        new = new + int(sheet.cell(i, 1).value)
-        resolved = resolved + int(sheet.cell(i, 2).value)
-        verified = verified + int(sheet.cell(i, 3).value)
-
-
-def fill_html_with_blank_row(table, nrows):
-    if nrows < 3:
-        n = nrows
-        while n < 3:
-            rows = table.find_all('tr')
-            rows[1].decompose()
-            n += 1
-        return
-
-    rows = table.find_all('tr')
-    row1 = rows[1]
-    row2 = rows[2]
-    insertRow = rows[0]
-    n = 3
-    while n < nrows:
-        if n % 2 == 1:
-            newRow = copy.copy(row2)
-        else:
-            newRow = copy.copy(row1)
-        insertRow.insert_after(newRow)
-        n += 1
-
-
-def fill_html_from_sheet(sheet, table):
-    rows = table.find_all('tr')
-    if len(rows) != (sheet.nrows + 1):
-        print("row number mismatch.")
-        return
-
-    for i in range(0, sheet.nrows):
-        cols = rows[i + 1].find_all('td')
-        # ID
-        s = cols[0].find('span')
-        s.string = str(int(sheet.cell(i, 0).value))
-        # Title
-        s = cols[1].find('span')
-        s.string = sheet.cell(i, 1).value
-        # NodeName
-        s = cols[2].find('span')
-        s.string = sheet.cell(i, 3).value
-        # AssignedTo
-        s = cols[3].find('span')
-        s.string = sheet.cell(i, 4).value
-        # ExpectedSolvedDate
-        j = len(cols)
-        s = cols[j - 1].find('span')
-        v = sheet.cell(i, 2).value
-        if v != '':
-            s.string = str(xlrd.xldate_as_datetime(v, 0).strftime('%y-%m-%d'))
-        else:
-            s.string = ''
-        if len(cols) > 5:
-            s = cols[4].find('span')
-            s.string = sheet.cell(i, 5).value
-
-
-
 if __name__ == '__main__':
     if len(sys.argv) == 2:
         f = open(sys.argv[1])
         lines = f.read().splitlines()
         day = datetime.date.today().isoweekday()
         # option 0 发邮件，option 1 更新html
-        modify_html(lines[0], lines[1], lines[2], lines[6], 0)
+        modify_html(lines[0], lines[1], lines[2], lines[6], lines[7], 0)
     else:
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
-        modify_html(lines[0], lines[1], lines[2], lines[6], 1)
+        modify_html(lines[0], lines[1], lines[2], lines[6], lines[7], 1)
         #update_module_html(lines[3], lines[4], lines[5], 1)
