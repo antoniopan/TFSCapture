@@ -23,7 +23,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[1])
 
-    # 读取未评审Improvement Task
+    # 读取过期Design Task
     task_sheet = xls.sheet_by_name("Designed Task Expired")
     modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[2])
