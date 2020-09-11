@@ -36,7 +36,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
         mail = outlook.CreateItem(0)
         mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
-        mail.CC.Add('HSW_GS_IPA_AP')
+        mail.CC = 'HSW_GS_IPA_AP'
         mail.Subject = 'UIDealB69SP4H2软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.HTMLBody = soup.prettify()
         mail.Send()

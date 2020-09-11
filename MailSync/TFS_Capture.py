@@ -150,7 +150,7 @@ if __name__ == '__main__':
         lines = f.read().splitlines()
         day = datetime.date.today().isoweekday()
         # option 0 发邮件，option 1 更新html
-        modify_html(lines[0], lines[1], lines[2], lines[6], lines[7], 0)
+        modify_html(lines[0], lines[1], lines[2], lines[7], lines[6], 0)
     else:
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
