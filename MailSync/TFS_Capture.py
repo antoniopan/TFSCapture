@@ -69,9 +69,9 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     #fill_html_from_sheet(taskUnReviewedSheet, tables[7])
 
     if option == 0:
-        f = open(name_file, 'r')
-        s_name = f.read();
-        f.close()
+        f_name = open(name_file, 'r')
+        s_name = f_name.read();
+        f_name.close()
         outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)
         mail.To = s_name
@@ -87,9 +87,9 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
         mail.HTMLBody = soup.prettify()
         mail.Send()
     elif option == 1:
-        f = open(dst_htm, 'w', encoding='utf-8')
-        f.write(soup.prettify())
-        f.close()
+        f_name = open(dst_htm, 'w', encoding='utf-8')
+        f_name.write(soup.prettify())
+        f_name.close()
 
 
 def update_module_html(srcHtml, dstHtml, srcXls, option):
