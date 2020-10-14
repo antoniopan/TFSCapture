@@ -58,8 +58,8 @@ if __name__ == '__main__':
         lines = f.read().splitlines()
         day = datetime.date.today().isoweekday()
         # option 0 发邮件，option 1 更新html
-        update_module_html(lines[3], lines[4], lines[5], lines[6], lines[7], 0)
+        update_module_html(lines[3], lines[4], lines[5], lines[6], 0)
     else:  # 本地运行，生成html文件
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
-        update_module_html(lines[3], lines[4], lines[5], 1)
+        update_module_html(lines[3], lines[4], lines[5], lines[6], 1)
