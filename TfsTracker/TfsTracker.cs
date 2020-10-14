@@ -39,6 +39,8 @@ namespace TFS_TRACKER
 
         private List<ResolveInfo> _ResolveResult; // Convert either UR or Task Query into a list, usually resolved
 
+        private Dictionary<string, int[]> _CreateResolveInfo;
+
         private readonly Application _xlApp;
 
         private readonly Workbook _xlsWorkbook;
@@ -479,6 +481,56 @@ namespace TFS_TRACKER
             sw.WriteLine(sTotal);
             sw.Flush();
             sw.Close();
+        }
+
+        public void ExtractCreateResolve(string sQueryCreate, string sQueryResolve)
+        {
+            _CreateResolveInfo = new Dictionary<string, int[]>();
+
+            var workItemResult = _workItemStore.Query(sQueryCreate).Cast<WorkItem>();
+            foreach (var wi in workItemResult)
+            {
+                if (!_CreateResolveInfo.Keys.Contains(wi.NodeName))
+                {
+                    _CreateResolveInfo.Add(wi.NodeName, new int[] { 0, 0 });
+                }
+                _CreateResolveInfo[wi.NodeName][0] += 1;
+            }
+
+            workItemResult = _workItemStore.Query(sQueryResolve).Cast<WorkItem>();
+            foreach (var wi in workItemResult)
+            {
+                if (!_CreateResolveInfo.Keys.Contains(wi.NodeName))
+                {
+                    _CreateResolveInfo.Add(wi.NodeName, new int[] { 0, 0 });
+                }
+                _CreateResolveInfo[wi.NodeName][1] += 1;
+            }
+
+            _CreateResolveInfo = _CreateResolveInfo.OrderBy(p => p.Key).ToDictionary(p => p.Key, o => o.Value);
+        }
+
+        public void WriteCreateResolveInfo(string sSheetName)
+        {
+            try
+            {
+                _xlsWorkbook.Worksheets.Add(Missing.Value);
+                _xlsWorkbook.ActiveSheet.Name = sSheetName;
+                Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
+
+                int i = 1;
+                foreach (var item in _CreateResolveInfo)
+                {
+                    sheet.Cells[i, 1] = item.Key;
+                    sheet.Cells[i, 2] = item.Value[0];
+                    sheet.Cells[i, 3] = item.Value[1];
+                    i += 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static int FindLastMonday()

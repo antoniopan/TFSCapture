@@ -28,6 +28,11 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
     modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[2])
 
+    # 读取本周Improvement Task变化
+    task_sheet = xls.sheet_by_name("Improvement Task This Week")
+    modify_table.fill_html_with_blank_row(tables[3], task_sheet.nrows)
+    modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[3])
+
     if option == 0:
         f = open(name_file, 'r')
         s_name = f.read();

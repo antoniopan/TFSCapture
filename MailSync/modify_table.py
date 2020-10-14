@@ -84,3 +84,21 @@ def fill_html_from_sheet(sheet, table):
         if len(cols) > 5:
             s = cols[4].find('span')
             s.string = sheet.cell(i, 5).value
+
+def fill_html_from_sheet_create_resolve(sheet, table):
+    rows = table.find_all('tr')
+    if len(rows) != (sheet.nrows + 1):
+        print("row number mismatch.")
+        return
+
+    for i in range(0, sheet.nrows):
+        cols = rows[i + 1].find_all('td')
+        # Node Name
+        s = cols[0].find('span')
+        s.string = sheet.cell(i, 0).value
+        # Create Number
+        s = cols[1].find('span')
+        s.string = str(int(sheet.cell(i, 1).value))
+        # Resolve Number
+        s = cols[2].find('span')
+        s.string = str(int(sheet.cell(i, 2).value))
