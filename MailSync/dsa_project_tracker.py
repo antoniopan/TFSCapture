@@ -70,7 +70,6 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
 
     if option == 0:
         images = ["%s/ProjPlan.png" % img_dir, "%s/image004.png" % img_dir]
-        print(images)
         # receiver = ''
         receiver = 'HSW_DSA'
         # CC = ''
