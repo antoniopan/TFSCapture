@@ -519,13 +519,20 @@ namespace TFS_TRACKER
                 Worksheet sheet = _xlsWorkbook.Worksheets[sSheetName];
 
                 int i = 1;
+                int iCreate = 0;
+                int iResolved = 0;
                 foreach (var item in _CreateResolveInfo)
                 {
                     sheet.Cells[i, 1] = item.Key;
                     sheet.Cells[i, 2] = item.Value[0];
                     sheet.Cells[i, 3] = item.Value[1];
                     i += 1;
+                    iCreate += item.Value[0];
+                    iResolved += item.Value[1];
                 }
+                sheet.Cells[i, 1] = @"总和";
+                sheet.Cells[i, 2] = iCreate;
+                sheet.Cells[i, 3] = iResolved;
             }
             catch (Exception e)
             {
