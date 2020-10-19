@@ -60,6 +60,11 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     modify_table.fill_html_with_blank_row(tables[4], urExpired.nrows)
     modify_table.fill_html_from_sheet(urExpired, tables[4])
 
+    # 读取本周Task变化
+    task_this_week = xls.sheet_by_name("Improvement Task This Week")
+    modify_table.fill_html_with_blank_row(tables[5], task_this_week.nrows)
+    modify_table.fill_html_from_sheet_create_resolve(task_this_week, tables[5])
+
     # 读取Expired Task
     #fill_html_with_blank_row(tables[2], taskExpiredSheet.nrows)
     #fill_html_from_sheet(taskExpiredSheet, tables[2])

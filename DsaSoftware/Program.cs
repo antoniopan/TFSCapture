@@ -35,6 +35,9 @@ namespace TestTFS
 
             tfsTracker.InitializeTFS();
 
+            tfsTracker.ExtractCreateResolve(sQueryTaskCreatedThisWeek, sQueryTaskResolvedThisWeek);
+            tfsTracker.WriteCreateResolveInfo("Improvement Task This Week");
+
             tfsTracker.ExtractTaskList(sQueryOpenP0Task);
             tfsTracker.WriteExcelItemList("P0 Task List");
 
