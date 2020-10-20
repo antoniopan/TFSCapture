@@ -14,7 +14,7 @@ namespace TestTFS
             var tfsTracker = new TFS_TRACKER.TfsTracker()
             {
                 UserName = "liangliang.pan",
-                Password = "2Antonio",
+                Password = "3Antonio",
                 FileName = args[0],
                 FileNameModule = args[1]
             };
