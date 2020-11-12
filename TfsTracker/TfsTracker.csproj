@@ -49,9 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProjectSchema.cs">
+      <DependentUpon>ProjectSchema.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TfsTracker.cs" />
     <Compile Include="WorkItemState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ProjectSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

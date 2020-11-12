@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="queryType">
+    <xs:sequence>
+      <xs:element name="queryname" type="xs:string"/>
+      <xs:element name="queryinfo" type="xs:string"/>
+      <xs:element name="parsemethod">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="tasklist"/>
+            <xs:enumeration value="urlist"/>
+            <xs:enumeration value="tasktable"/>
+            <xs:enumeration value="urtable"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="replacetoday" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="projectqueryType">
+    <xs:sequence>
+      <xs:element name="query" type="queryType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="projectquery" type="projectqueryType"/>
+</xs:schema>
