@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<projectquery>
+	<query>
+		<queryname>Task Table</queryname>
+		<queryinfo>select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [Microsoft.VSTS.Common.Priority] in (0, 1) and not [System.NodeName] in ('IC', 'SC') order by [System.State], [System.NodeName], [System.AssignedTo] desc</queryinfo>
+		<parsemethod>tasktable</parsemethod>
+		<replacetoday>false</replacetoday>
+	</query>
+	<query>
+		<queryname>Task Resolved This Week</queryname>
+		<queryinfo>select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [System.State] in ('Resolved', 'Verified', 'Closed') and [Microsoft.VSTS.Common.ResolvedDate] &gt;= @today and not [System.NodeName] in ('SC', 'IC') order by [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]</queryinfo>
+		<parsemethod>resolvelist</parsemethod>
+		<replacetoday>true</replacetoday>
+	</query>	
+	<query>
+		<queryname>UR Table</queryname>
+		<queryinfo>SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] IN ('1-CMTC', '2-临床')  AND  [System.IterationPath] UNDER 'XR_LouTang\V0.5' ORDER BY [XR.UModule] desc</queryinfo>
+		<parsemethod>urtable</parsemethod>
+		<replacetoday>false</replacetoday>
+	</query>
+	<query>
+		<queryname>UR Resolved This Week</queryname>
+		<queryinfo>select [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] from WorkItems where [System.TeamProject] = 'XR_Loutang' and [System.WorkItemType] = 'User Requirement' and [System.AreaPath] under 'XR_LouTang\User Requirement\PRODM\SW' and [System.State] in ('35-Resolved', '40-SSIT Done', '50-SI', '60-SIT', '70-ST') and [Microsoft.VSTS.Common.ResolvedDate] &gt;= @today order by [XR.UModule] desc</queryinfo>
+		<parsemethod>resolvelist</parsemethod>
+		<replacetoday>true</replacetoday>
+	</query>
+	<query>
+		<queryname>Expired UR</queryname>
+		<queryinfo>SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] IN ('1-CMTC', '2-临床')  AND  [Microsoft.VSTS.Scheduling.FinishDate] &lt; @today  AND  [System.State] IN ('10-Requirement', '20-Solution', '30-Development')  AND  [System.IterationPath] IN ('XR_LouTang\V0.1', 'XR_LouTang\V0.2', 'XR_LouTang\V0.3', 'XR_LouTang\V0.4', 'XR_LouTang\V0.5') ORDER BY [XR.UModule] desc</queryinfo>
+		<parsemethod>urlist</parsemethod>
+		<replacetoday>false</replacetoday>
+	</query>
+	<query>
+		<queryname>Task Change This Week</queryname>
+		<queryinfo>select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [System.CreatedDate] &gt;= @today and not [System.NodeName] in ('SC', 'IC') order by [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]</queryinfo>
+		<additionalqueryinfo>select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [System.State] in ('Resolved', 'Verified', 'Closed') and [Microsoft.VSTS.Common.ResolvedDate] &gt;= @today and not [System.NodeName] in ('SC', 'IC') order by [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]</additionalqueryinfo>
+		<parsemethod>createresolve</parsemethod>
+		<replacetoday>true</replacetoday>
+	</query>
+</projectquery>

@@ -21,22 +21,13 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
 
     xls = xlrd.open_workbook(src_xls)
 
-    # 读取User Requirement
-    #fill_html_with_blank_row(tables[0], urSheet.nrows + 1)
-    #sync_xls_html(urSheet, tables[0])
-
-    # 读取P1 Task
-    #p1_task = xls.sheet_by_name("P1 Task List")
-    #fill_html_with_blank_row(tables[0], p1_task.nrows)
-    #fill_html_from_sheet(p1_task, tables[0])
-
     # 读取Task
     task_sheet = xls.sheet_by_name("Task Table")
     modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
     modify_table.sync_xls_html(task_sheet, tables[0])
 
     # 读取本周Task
-    task_this_week = xls.sheet_by_name("Task This Week")
+    task_this_week = xls.sheet_by_name("Task Resolved This Week")
     modify_table.fill_html_with_blank_row(tables[1], task_this_week.nrows)
     modify_table.fill_html_from_sheet(task_this_week, tables[1])
 
@@ -45,13 +36,8 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     modify_table.fill_html_with_blank_row(tables[2], ur_all.nrows)
     modify_table.sync_xls_html(ur_all, tables[2])
 
-    # 读取临床 UR
-    #ur_clinical = xls.sheet_by_name("UR Clinical Table")
-    #fill_html_with_blank_row(tables[4], ur_clinical.nrows)
-    #sync_xls_html(ur_clinical, tables[4])
-
     # 读取本周UR
-    ur_this_week = xls.sheet_by_name("UR This Week")
+    ur_this_week = xls.sheet_by_name("UR Resolved This Week")
     modify_table.fill_html_with_blank_row(tables[3], ur_this_week.nrows)
     modify_table.fill_html_from_sheet(ur_this_week, tables[3])
 
@@ -61,17 +47,9 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     modify_table.fill_html_from_sheet(urExpired, tables[4])
 
     # 读取本周Task变化
-    task_this_week = xls.sheet_by_name("Improvement Task This Week")
+    task_this_week = xls.sheet_by_name("Task Change This Week")
     modify_table.fill_html_with_blank_row(tables[5], task_this_week.nrows)
     modify_table.fill_html_from_sheet_create_resolve(task_this_week, tables[5])
-
-    # 读取Expired Task
-    #fill_html_with_blank_row(tables[2], taskExpiredSheet.nrows)
-    #fill_html_from_sheet(taskExpiredSheet, tables[2])
-
-    # 读取UnReviewed Task
-    #fill_html_with_blank_row(tables[7], taskUnReviewedSheet.nrows)
-    #fill_html_from_sheet(taskUnReviewedSheet, tables[7])
 
     if option == 0:
         images = ["%s/ProjPlan.png" % img_dir, "%s/image004.png" % img_dir]

@@ -563,5 +563,36 @@ namespace TFS_TRACKER
                     return 0;
             }
         }
+
+        public static void ProcessQueryXml(projectqueryType projQuery)
+        {
+            foreach(var query in projQuery.query)
+            {
+                if (query.replacetoday)
+                {
+                    query.queryinfo = query.queryinfo.Replace("@today", String.Format("@today-{0:D}", FindLastMonday()));
+                    if (query.additionalqueryinfo != null)
+                    {
+                        query.additionalqueryinfo = query.additionalqueryinfo.Replace("@today", String.Format("@today-{0:D}", FindLastMonday()));
+                    }
+                }
+            }
+        }
+
+        public static projectqueryType Deserialize(string path)
+        {
+            object obj = null;
+
+            if (File.Exists(path))
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(projectqueryType));
+                    obj = serializer.Deserialize(sr);
+                }
+            }
+
+            return obj as projectqueryType;
+        }
     }
 }

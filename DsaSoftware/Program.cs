@@ -19,53 +19,41 @@ namespace TestTFS
                 FileNameModule = args[1]
             };
 
-            //string sQueryCMTCUR = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] = '1-CMTC' ORDER BY [XR.UModule] desc";
-            string sQueryClinicalUR = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] IN ('1-CMTC', '2-临床') ORDER BY [XR.UModule] desc";
-            string sQueryAllUR = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] IN ('1-CMTC', '2-临床')  AND  [System.IterationPath] UNDER 'XR_LouTang\V0.5' ORDER BY [XR.UModule] desc";
-            string sQueryAllTask = @"select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [Microsoft.VSTS.Common.Priority] in (0, 1) and not [System.NodeName] in ('IC', 'SC') order by [System.State], [System.NodeName], [System.AssignedTo] desc";
-            string sQueryExpiredUR = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] IN ('1-CMTC', '2-临床')  AND  [Microsoft.VSTS.Scheduling.FinishDate] < @today  AND  [System.State] IN ('10-Requirement', '20-Solution', '30-Development')  AND  [System.IterationPath] IN ('XR_LouTang\V0.5') ORDER BY [XR.UModule] desc";
-            //string sQueryUnPlannedUR = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [XR.UAttribute] = '1-CMTC'  AND  [System.State] IN ('10-Requirement', '20-Solution', '30-Development')  AND  [Microsoft.VSTS.Scheduling.FinishDate] = '' ORDER BY [XR.UModule] desc";
-            //string sQueryExpiredTask = @"SELECT [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [System.AreaPath] UNDER 'Task\XR\08_Loutang\Software'  AND  [System.NodeName] NOT IN ('SC', 'IC')  AND  [Microsoft.VSTS.Common.Activity] = 'Improvement'  AND  [System.State] IN ('New', 'Assigned')  AND ( [UI.Reserved] CONTAINS 'v0.2'  OR  [UI.Reserved] CONTAINS 'v0.3'  OR  [UI.Reserved] CONTAINS 'v1.0' ) AND  [UI.ExpectedSolvedDate] < @today ORDER BY [UI.ExpectedSolvedDate], [System.NodeName] ";
-            //string sQueryUnPlannedTask = @"";
-            //string sQueryUnReviewedTask = @"select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedDate], [System.CreatedBy] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and ([System.State] = 'Assigned' or [System.State] = 'New') and not [UI.Reserved] contains 'v0.2' and not [UI.Reserved] contains 'v0.3' and not [UI.Reserved] contains 'v1.0' and not [UI.Reserved] contains 'NoCMTC' order by [System.AssignedTo], [System.CreatedDate] desc";
-            string sQueryURThisWeek = @"SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [System.State] IN ('35-Resolved', '40-SSIT Done', '50-SI', '60-SIT', '70-ST')  AND  [Microsoft.VSTS.Common.ResolvedDate] >= @today ORDER BY [XR.UModule] desc".Replace("@today", String.Format("@today-{0:D}", TFS_TRACKER.TfsTracker.FindLastMonday()));
-            string sQueryTaskResolvedThisWeek = @"SELECT [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [System.AreaPath] UNDER 'Task\XR\08_Loutang\Software'  AND  [Microsoft.VSTS.Common.Activity] = 'Improvement'  AND  [System.State] IN ('Resolved', 'Verified', 'Closed')  AND  [Microsoft.VSTS.Common.ResolvedDate] >= @today  AND  [System.NodeName] NOT IN ('SC', 'IC') ORDER BY [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]".Replace("@today", String.Format("@today-{0:D}", TFS_TRACKER.TfsTracker.FindLastMonday()));
-            string sQueryTaskCreatedThisWeek = @"SELECT [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [System.AreaPath] UNDER 'Task\XR\08_Loutang\Software'  AND  [Microsoft.VSTS.Common.Activity] = 'Improvement'  AND  [System.CreatedDate] >= @today  AND  [System.NodeName] NOT IN ('SC', 'IC') ORDER BY [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]".Replace("@today", String.Format("@today-{0:D}", TFS_TRACKER.TfsTracker.FindLastMonday()));
-            string sQueryOpenP0Task = @"SELECT [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [System.AreaPath] UNDER 'Task\XR\08_Loutang\Software'  AND  [Microsoft.VSTS.Common.Activity] = 'Improvement'  AND  [Microsoft.VSTS.Common.Priority] = 0 ORDER BY [System.State], [System.NodeName], [System.AssignedTo] desc";
+            var queries = TFS_TRACKER.TfsTracker.Deserialize(args[3]);
+            TFS_TRACKER.TfsTracker.ProcessQueryXml(queries);
 
             tfsTracker.InitializeTFS();
 
-            tfsTracker.ExtractCreateResolve(sQueryTaskCreatedThisWeek, sQueryTaskResolvedThisWeek);
-            tfsTracker.WriteCreateResolveInfo("Improvement Task This Week");
-
-            tfsTracker.ExtractTaskList(sQueryOpenP0Task);
-            tfsTracker.WriteExcelItemList("P0 Task List");
-
-            tfsTracker.ExtractTaskQueryInfo(sQueryAllTask);
-            tfsTracker.WriteTask2Excel("Task Table");
-
-            tfsTracker.ExtractResolveInfo(sQueryTaskResolvedThisWeek);
-            tfsTracker.WriteResolveItemList("Task This Week");
-
-            tfsTracker.ExtractTaskList(sQueryTaskCreatedThisWeek);
-            tfsTracker.WriteExcelItemList("Task Created This Week");
-
-            tfsTracker.ExtractURList(sQueryExpiredUR);
-            tfsTracker.WriteExcelItemList("Expired UR");
-
-            //tfsTracker.ExtractURQueryInfo(sQueryCMTCUR);
-            //tfsTracker.WriteUR2Excel("UR CMTC Table");
-
-            //tfsTracker.ExtractURQueryInfo(sQueryClinicalUR);
-            //tfsTracker.WriteUR2Excel("UR Clinical Table");
-
-            tfsTracker.ExtractURQueryInfo(sQueryAllUR);
-            tfsTracker.WriteUR2Excel("UR Table");
-
-            tfsTracker.ExtractResolveInfo(sQueryURThisWeek);
-            tfsTracker.WriteResolveItemList("UR This Week");
-
-            tfsTracker.ExtractURQueryInfo(sQueryClinicalUR);
+            foreach (var query in queries.query)
+            {
+                switch (query.parsemethod)
+                {
+                    case queryTypeParsemethod.resolvelist:
+                        tfsTracker.ExtractResolveInfo(query.queryinfo);
+                        tfsTracker.WriteResolveItemList(query.queryname);
+                        break;
+                    case queryTypeParsemethod.tasklist:
+                        tfsTracker.ExtractTaskList(query.queryinfo);
+                        tfsTracker.WriteExcelItemList(query.queryname);
+                        break;
+                    case queryTypeParsemethod.urlist:
+                        tfsTracker.ExtractURList(query.queryinfo);
+                        tfsTracker.WriteExcelItemList(query.queryname);
+                        break;
+                    case queryTypeParsemethod.tasktable:
+                        tfsTracker.ExtractTaskQueryInfo(query.queryinfo);
+                        tfsTracker.WriteTask2Excel(query.queryname);
+                        break;
+                    case queryTypeParsemethod.urtable:
+                        tfsTracker.ExtractURQueryInfo(query.queryinfo);
+                        tfsTracker.WriteUR2Excel(query.queryname);
+                        break;
+                    case queryTypeParsemethod.createresolve:
+                        tfsTracker.ExtractCreateResolve(query.queryinfo, query.additionalqueryinfo);
+                        tfsTracker.WriteCreateResolveInfo(query.queryname);
+                        break;
+                }
+            }
 
             tfsTracker.WriteUrByModule();
 
