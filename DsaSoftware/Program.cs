@@ -16,10 +16,10 @@ namespace TestTFS
                 UserName = "liangliang.pan",
                 Password = "3Antonio",
                 FileName = args[0],
-                FileNameModule = args[1]
+                FileNameModule = "haha"
             };
 
-            var queries = TFS_TRACKER.TfsTracker.Deserialize(args[3]);
+            var queries = TFS_TRACKER.TfsTracker.Deserialize(args[2]);
             TFS_TRACKER.TfsTracker.ProcessQueryXml(queries);
 
             tfsTracker.InitializeTFS();
@@ -55,9 +55,7 @@ namespace TestTFS
                 }
             }
 
-            tfsTracker.WriteUrByModule();
-
-            tfsTracker.WriteName2File(args[2]);
+            tfsTracker.WriteName2File(args[1]);
         }
     }
 }
