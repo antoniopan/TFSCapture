@@ -19,4 +19,10 @@
 		<parsemethod>createresolve</parsemethod>
 		<replacetoday>true</replacetoday>
 	</query>
+	<query>
+		<queryname>Expired H3 Key</queryname>
+		<queryinfo>SELECT [System.Id], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [MR.Requirement.ApplicativeProject], [System.NodeName], [UI.bug.keyword], [UI.Reserved], [UI.Bug.ExpectFixedBranch], [UI.ExpectedSolvedDate], [Microsoft.VSTS.Common.ResolvedDate], [Microsoft.VSTS.Common.ResolvedBy], [System.CreatedDate], [System.ChangedDate] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND (( [System.AreaPath] UNDER 'Task\SW\UIDeal_AWS'  AND  [MR.Requirement.ApplicativeProject] CONTAINS '[HSW-uWS-CT]' ) OR  [System.AreaPath] UNDER 'Task\SW\uInnovation'  OR  [System.AreaPath] UNDER 'Task\SW\MCSF1'  OR  [System.NodeName] = 'Report' ) AND  [System.WorkItemType] = 'Task'  AND  [Microsoft.VSTS.Common.Activity] = 'Design'  AND  [System.NodeName] IN ('Heart', 'Liver Evaluation', 'Lung Nodule', 'Dual Energy Analysis', 'Dental Application', 'Colon Analysis', 'Body Perfusion', 'Bone Structure Analysis', 'Lung Density Analysis', 'Report', 'Review 4D', 'Dynamic Analysis_CT', 'Vessel Analysis_CT', 'Vessel Analysis_MR', 'Heart_Common', 'Vessel_Common', 'Vessel_Heart_Combined', 'FFR', 'Brain Perfusion_CT_3D')  AND  [UI.bug.keyword] CONTAINS '69SP4H3'  AND  [System.Title] CONTAINS 'Design_Func'  AND ( [UI.ExpectedSolvedDate] = ''  OR  [UI.ExpectedSolvedDate] &gt; '2021-01-22T00:00:00.0000000'  OR  [UI.ExpectedSolvedDate] &lt; @today ) AND  [System.State] IN ('New', 'Assigned') ORDER BY [System.NodeName], [System.State]</queryinfo>
+		<parsemethod>tasklist</parsemethod>
+		<replacetoday>false</replacetoday>
+	</query>
 </projectquery>
