@@ -28,6 +28,11 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
     modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
     modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[2])
 
+    # 读取过期的Design Task
+    task_sheet = xls.sheet_by_name("Expired H3 Key")
+    modify_table.fill_html_with_blank_row(tables[3], task_sheet.nrows)
+    modify_table.fill_html_from_sheet(task_sheet, tables[3])
+
     if option == 0:
         f = open(name_file, 'r')
         s_name = f.read();
@@ -37,7 +42,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
         mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
         mail.CC = 'HSW_GS_IPA_AP@united-imaging.com'
-        mail.Subject = 'UIDealB69SP4H2软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
+        mail.Subject = 'UIDealB69SP4H2H3软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.HTMLBody = soup.prettify()
         mail.Send()
     elif option == 1:
