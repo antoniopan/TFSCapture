@@ -42,7 +42,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
         mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
         mail.CC = 'HSW_GS_IPA_AP@united-imaging.com'
-        mail.Subject = 'UIDealB69SP4H2H3软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
+        mail.Subject = 'UIDealB69SP4H2H3及uInnovation科研工作站软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.HTMLBody = soup.prettify()
         mail.Send()
     elif option == 1:
