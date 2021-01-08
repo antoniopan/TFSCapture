@@ -13,25 +13,25 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
 
     xls = xlrd.open_workbook(src_xls)
 
-    # 读取过期Improvement Task
-    task_sheet = xls.sheet_by_name("Improvement Task Expired")
+    # 读取过期的Design Task
+    task_sheet = xls.sheet_by_name("H3 Design Task Expired")
     modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[0])
 
     # 读取未评审Improvement Task
-    task_sheet = xls.sheet_by_name("Improvement Task Unreviewed")
+    task_sheet = xls.sheet_by_name("uInnovation Task Unreviewed")
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[1])
 
+    # 读取过期Improvement Task
+    task_sheet = xls.sheet_by_name("uInnovation Task Expired")
+    modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
+    modify_table.fill_html_from_sheet(task_sheet, tables[2])
+
     # 读取本周Improvement Task变化
     task_sheet = xls.sheet_by_name("Task Change This Week")
-    modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
-    modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[2])
-
-    # 读取过期的Design Task
-    task_sheet = xls.sheet_by_name("Expired H3 Key")
     modify_table.fill_html_with_blank_row(tables[3], task_sheet.nrows)
-    modify_table.fill_html_from_sheet(task_sheet, tables[3])
+    modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[3])
 
     if option == 0:
         f = open(name_file, 'r')
@@ -42,7 +42,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
         mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
         mail.CC = 'HSW_GS_IPA_AP@united-imaging.com'
-        mail.Subject = 'UIDealB69SP4H2H3及uInnovation科研工作站软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
+        mail.Subject = 'UIDealB69SP4H3及uInnovation科研工作站软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.HTMLBody = soup.prettify()
         mail.Send()
     elif option == 1:
