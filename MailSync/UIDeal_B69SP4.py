@@ -13,25 +13,30 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
 
     xls = xlrd.open_workbook(src_xls)
 
-    # 读取过期的Design Task
-    task_sheet = xls.sheet_by_name("H3 Design Task Expired")
+    # 读取过期的H3 Design Task
+    task_sheet = xls.sheet_by_name("H3 Task Expired")
     modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[0])
 
-    # 读取未评审Improvement Task
-    task_sheet = xls.sheet_by_name("uInnovation Task Unreviewed")
+    # 读取未评审H3 Improvement Task
+    task_sheet = xls.sheet_by_name("H3 Task Unreviewed")
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[1])
 
-    # 读取过期Improvement Task
+    # 读取过期uInnovation Improvement Task
     task_sheet = xls.sheet_by_name("uInnovation Task Expired")
     modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[2])
 
+    # 读取未评审uInnovation Improvement Task
+    task_sheet = xls.sheet_by_name("uInnovation Task Unreviewed")
+    modify_table.fill_html_with_blank_row(tables[3], task_sheet.nrows)
+    modify_table.fill_html_from_sheet(task_sheet, tables[3])
+
     # 读取本周Improvement Task变化
     task_sheet = xls.sheet_by_name("Task Change This Week")
-    modify_table.fill_html_with_blank_row(tables[3], task_sheet.nrows)
-    modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[3])
+    modify_table.fill_html_with_blank_row(tables[4], task_sheet.nrows)
+    modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[4])
 
     if option == 0:
         f = open(name_file, 'r')
