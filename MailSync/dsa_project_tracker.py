@@ -46,7 +46,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
         # receiver = ''
         receiver = 'HSW_DSA'
         # CC = ''
-        CC = 'jun.xiang_XR; qianqian.yu_XR; jinpeng.jiang_XR; ting.meng_XR; wanli.teng_XR; HSW_Manager'
+        CC = 'HSW_Manager'
         utils.send_mail(name_file, 'DSA软件状态同步', soup.prettify(), receiver, CC, images)
     elif option == 1:
         f_name = open(dst_htm, 'w', encoding='utf-8')
