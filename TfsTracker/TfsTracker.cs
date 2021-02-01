@@ -286,6 +286,7 @@ namespace TFS_TRACKER
                         }
                     case "Verified":
                     case "Closed":
+                    case "Terminated":
                         {
                             _taskResult[sNodeName].Verified += 1;
                             break;

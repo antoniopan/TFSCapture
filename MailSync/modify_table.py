@@ -1,5 +1,6 @@
 import copy
 import xlrd
+import math
 
 
 def fill_html_with_blank_row(table, number_rows):
@@ -39,14 +40,17 @@ def sync_xls_html(sheet, table):
         # 模块
         s = cols[0].find_all('span')
         s[0].string = sheet.cell(i, 0).value
-        for k in range(1, len(cols) - 1):
+        for k in range(1, len(cols) - 2):
             s = cols[k].find_all('span')
             s[0].string = str(int(sheet.cell(i, k).value))
 
-        k = len(cols) - 1
+        k = sheet.ncols - 1
         s = cols[k].find_all('span')
         d_percentage = (sheet.cell(i, k - 3).value + sheet.cell(i, k - 2).value) / sheet.cell(i, k - 1).value
         s[0].string = '%.0f%%' % (d_percentage * 100)
+        s = cols[k + 1].find_all('span')
+        n_bugs = math.ceil((0.9 - d_percentage) * sheet.cell(i, k - 1).value)
+        s[0].string = '%d' % n_bugs
 
         new = new + int(sheet.cell(i, 1).value)
         resolved = resolved + int(sheet.cell(i, 2).value)
