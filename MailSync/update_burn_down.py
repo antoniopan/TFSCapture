@@ -75,7 +75,7 @@ def match_today(ws):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 2:
-        update_burn_down_xlsx(sys.argv[0], sys.argv[1])
+    if len(sys.argv) == 3:
+        update_burn_down_xlsx(sys.argv[1], sys.argv[2])
     else:
         update_burn_down_xlsx('E:/Code/CSharp/TFSCapture/MailSync/temp(1).xlsx', 'E:/Documents/项目/大C/PM/BugBurndown.xlsx')
