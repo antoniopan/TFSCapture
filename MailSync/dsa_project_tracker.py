@@ -64,4 +64,4 @@ if __name__ == '__main__':
     else: # 本地运行，生成html文件
         f = open('./debug_file.txt', 'r')
         lines = f.read().splitlines()
-        modify_html(lines[0], lines[1], lines[2], lines[6], lines[7], 1)
+        modify_html(lines[0], lines[1], lines[2], lines[7], lines[6], 1)

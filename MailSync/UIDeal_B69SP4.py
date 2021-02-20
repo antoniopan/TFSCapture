@@ -40,7 +40,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
 
     if option == 0:
         f = open(name_file, 'r')
-        s_name = f.read();
+        s_name = f.read()
         f.close()
         outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)
