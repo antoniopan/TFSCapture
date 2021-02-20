@@ -24,4 +24,4 @@ def send_mail(name_file, mail_header, mail_body, receiver, forworder, img_attach
         i += 1
 
     mail.HTMLBody = mail_body
-    mail.send()
+    mail.Send()
