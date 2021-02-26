@@ -59,6 +59,10 @@ def update_burn_down_xlsx(src, dst):
             ws_sr.cell(row_sr, 10).value = sr
             ws_d.cell(row_d, 10).value = d
             ws_o.cell(row_o, 10).value = open
+        elif 'Archiving' == module:
+            ws_sr.cell(row_sr, 11).value = sr
+            ws_d.cell(row_d, 11).value = d
+            ws_o.cell(row_o, 11).value = open
 
     wb_bd.save(dst)
 
@@ -78,4 +82,4 @@ if __name__ == '__main__':
     if len(sys.argv) == 3:
         update_burn_down_xlsx(sys.argv[1], sys.argv[2])
     else:
-        update_burn_down_xlsx('E:/Code/CSharp/TFSCapture/MailSync/temp(1).xlsx', 'E:/Documents/项目/大C/PM/BugBurndown.xlsx')
+        update_burn_down_xlsx('E:/Code/TFSCapture/MailSync/temp.xlsx', 'E:/Code/TFSCapture/MailSync/BugBurndown.xlsx')
