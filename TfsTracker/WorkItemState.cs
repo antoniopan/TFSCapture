@@ -59,6 +59,8 @@ namespace TFS_TRACKER
         public string NodeName { get; set; }
 
         public string AssignedTo { get; set; }
+
+        public string Priority { get; set; }
     }
 
     class ResolveInfo

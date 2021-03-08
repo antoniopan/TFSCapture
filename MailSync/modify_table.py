@@ -71,23 +71,27 @@ def fill_html_from_sheet(sheet, table):
         # Title
         s = cols[1].find('span')
         s.string = sheet.cell(i, 1).value
-        # NodeName
+        # Priority
         s = cols[2].find('span')
+        s.string = str(int(sheet.cell(i, 2).value))
+        # NodeName
+        s = cols[3].find('span')
         s.string = sheet.cell(i, 3).value
         # AssignedTo
-        s = cols[3].find('span')
+        s = cols[4].find('span')
         s.string = sheet.cell(i, 4).value
         # ExpectedSolvedDate
         j = len(cols)
         s = cols[j - 1].find('span')
-        v = sheet.cell(i, 2).value
-        if v != '':
-            s.string = str(xlrd.xldate_as_datetime(v, 0).strftime('%y-%m-%d'))
-        else:
+        if sheet.ncols <= 5:
             s.string = ''
-        if len(cols) > 5:
-            s = cols[4].find('span')
-            s.string = sheet.cell(i, 5).value
+        else:
+            v = sheet.cell(i, 5).value
+            if v != '':
+                s.string = str(xlrd.xldate_as_datetime(v, 0).strftime('%y-%m-%d'))
+            else:
+                s.string = ''
+
 
 def fill_html_from_sheet_create_resolve(sheet, table):
     rows = table.find_all('tr')

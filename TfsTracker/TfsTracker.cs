@@ -380,7 +380,8 @@ namespace TFS_TRACKER
                     Title = wi.Title,
                     ExpectedSolvedDate = (wi["Expected Solved Date"] == null) ? "" : wi["Expected Solved Date"].ToString(),
                     NodeName = wi.NodeName,
-                    AssignedTo = iIndex > 0 ? sAssignedTo.Substring(0, sAssignedTo.IndexOf('_')) : sAssignedTo
+                    AssignedTo = iIndex > 0 ? sAssignedTo.Substring(0, sAssignedTo.IndexOf('_')) : sAssignedTo,
+                    Priority = wi["Priority"].ToString()
                 });
             }
         }
@@ -398,9 +399,10 @@ namespace TFS_TRACKER
                 {
                     sheet.Cells[i, 1] = item.ID;
                     sheet.Cells[i, 2] = item.Title;
-                    sheet.Cells[i, 3] = item.ExpectedSolvedDate;
+                    sheet.Cells[i, 3] = item.Priority;
                     sheet.Cells[i, 4] = item.NodeName;
                     sheet.Cells[i, 5] = item.AssignedTo;
+                    sheet.Cells[i, 6] = item.ExpectedSolvedDate;
                     i += 1;
                 }
             }
