@@ -322,6 +322,7 @@ namespace TFS_TRACKER
                     sheet.Cells[i, 4] = item.Value.Verified.ToString();
                     sheet.Cells[i, 5] = item.Value.Total.ToString();
                     sheet.Cells[i, 6] = item.Value.Percentage;
+                    sheet.Cells[i, 7] = String.Format("{0:P0}", Convert.ToDouble(item.Value.Verified) / Convert.ToDouble(item.Value.Total));
                     _summaryTask.Assigned += item.Value.Assigned;
                     _summaryTask.Resolved += item.Value.Resolved;
                     _summaryTask.Verified += item.Value.Verified;
@@ -335,6 +336,8 @@ namespace TFS_TRACKER
                 sheet.Cells[i, 5] = _summaryTask.Total.ToString();
                 double dPercentage = Convert.ToDouble(_summaryTask.Resolved + _summaryTask.Verified) / Convert.ToDouble(_summaryTask.Total);
                 sheet.Cells[i, 6] = String.Format("{0:P0}", dPercentage);
+                dPercentage = Convert.ToDouble(_summaryTask.Verified) / Convert.ToDouble(_summaryTask.Total);
+                sheet.Cells[i, 7] = String.Format("{0:P0}", dPercentage);
             }
             catch (Exception e)
             {
@@ -430,7 +433,7 @@ namespace TFS_TRACKER
                     ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
                     NodeName = wi.NodeName,
                     ResolvedBy = iIndex > 0 ? sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')) : "",
-                    Reserved = (wi.Type.Name == "Task") ? String.Format("P{0}", wi["Priority"].ToString()) : wi.IterationPath
+                    Reserved = (wi.Type.Name == "Task") ? String.Format("P{0}", wi["Priority"].ToString()) : ""
                 });
             }
 
@@ -450,10 +453,10 @@ namespace TFS_TRACKER
                 {
                     sheet.Cells[i, 1] = item.ID;
                     sheet.Cells[i, 2] = item.Title;
-                    sheet.Cells[i, 3] = item.ResolvedDate;
+                    sheet.Cells[i, 3] = item.Reserved;
                     sheet.Cells[i, 4] = item.NodeName;
                     sheet.Cells[i, 5] = item.ResolvedBy;
-                    sheet.Cells[i, 6] = item.Reserved;
+                    sheet.Cells[i, 6] = item.ResolvedDate;
                     i += 1;
                 }
             }

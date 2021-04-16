@@ -40,15 +40,21 @@ def sync_xls_html(sheet, table):
         # 模块
         s = cols[0].find_all('span')
         s[0].string = sheet.cell(i, 0).value
-        for k in range(1, len(cols) - 2):
+        for k in range(1, len(cols) - 3):
             s = cols[k].find_all('span')
             s[0].string = str(int(sheet.cell(i, k).value))
 
-        k = sheet.ncols - 1
-        s = cols[k].find_all('span')
-        d_percentage = (sheet.cell(i, k - 3).value + sheet.cell(i, k - 2).value) / sheet.cell(i, k - 1).value
-        s[0].string = '%.0f%%' % (d_percentage * 100)
+        k = sheet.ncols - 2
+        # 验证率
         s = cols[k + 1].find_all('span')
+        d_percentage = sheet.cell(i, k + 1).value
+        s[0].string = '%.0f%%' % (d_percentage * 100)
+        # 解决率
+        s = cols[k].find_all('span')
+        d_percentage = sheet.cell(i, k).value
+        s[0].string = '%.0f%%' % (d_percentage * 100)
+        # 待解决个数
+        s = cols[k + 2].find_all('span')
         n_bugs = math.ceil((0.9 - d_percentage) * sheet.cell(i, k - 1).value)
         s[0].string = '%d' % n_bugs
 
@@ -73,7 +79,8 @@ def fill_html_from_sheet(sheet, table):
         s.string = sheet.cell(i, 1).value
         # Priority
         s = cols[2].find('span')
-        s.string = str(int(sheet.cell(i, 2).value))
+        if sheet.cell(i, 2).value != '':
+            s.string = str(int(sheet.cell(i, 2).value))
         # NodeName
         s = cols[3].find('span')
         s.string = sheet.cell(i, 3).value

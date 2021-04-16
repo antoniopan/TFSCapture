@@ -7,9 +7,9 @@
 		<replacetoday>false</replacetoday>
 	</query>
 	<query>
-		<queryname>Task Expired</queryname>
-		<queryinfo>SELECT [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate], [UI.Bug.ExpectFixedBranch] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [System.AreaPath] UNDER 'Task\XR\08_Loutang\Software'  AND  [Microsoft.VSTS.Common.Activity] = 'Improvement'  AND  [Microsoft.VSTS.Common.Priority] IN (0, 1)  AND  [System.NodeName] IN ('3D', 'Filming', 'MainFrame', 'PA', 'PR', 'Ref', 'RenderServer', 'Review', 'Archiving')  AND  [System.State] IN ('Assigned', 'New')  AND ( [UI.ExpectedSolvedDate] = ''  OR  [UI.ExpectedSolvedDate] &lt; @today ) AND  [UI.Bug.ExpectFixedBranch] CONTAINS '[DSA_Trunk]'  AND  [UI.Reserved] NOT CONTAINS '临床后' ORDER BY [System.State], [System.NodeName], [System.AssignedTo] desc</queryinfo>
-		<parsemethod>tasklist</parsemethod>
+		<queryname>UR Expired</queryname>
+		<queryinfo>select [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] from WorkItems where [System.TeamProject] = 'XR_Loutang' and [System.WorkItemType] = 'User Requirement' and [System.AreaPath] under 'XR_LouTang\User Requirement\PRODM\SW' and [XR.UAttribute] in ('1-CMTC', '2-临床') and [Microsoft.VSTS.Scheduling.FinishDate] &lt; @today and [System.State] in ('10-Requirement', '20-Solution', '30-Development') and [System.NodeName] in ('3D', 'Review', 'Ref', 'PA', 'PR', 'Filming', 'Archiving', 'MainFrame') and [System.IterationPath] under 'XR_LouTang\V0.6' order by [XR.UModule] desc</queryinfo>
+		<parsemethod>urlist</parsemethod>
 		<replacetoday>false</replacetoday>
 	</query>	
 	<query>
@@ -23,6 +23,12 @@
 		<queryinfo>select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [System.CreatedDate] &gt;= @today and not [System.NodeName] in ('SC', 'IC') order by [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]</queryinfo>
 		<additionalqueryinfo>select [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate] from WorkItems where [System.TeamProject] = 'Task' and [System.WorkItemType] = 'Task' and [System.AreaPath] under 'Task\XR\08_Loutang\Software' and [Microsoft.VSTS.Common.Activity] = 'Improvement' and [System.State] in ('Resolved', 'Verified', 'Closed') and [Microsoft.VSTS.Common.ResolvedDate] &gt;= @today and not [System.NodeName] in ('SC', 'IC') order by [System.State], [System.AssignedTo], [Microsoft.VSTS.Common.Priority]</additionalqueryinfo>
 		<parsemethod>createresolve</parsemethod>
+		<replacetoday>true</replacetoday>
+	</query>
+	<query>
+		<queryname>UR Resolved This Week</queryname>
+		<queryinfo>SELECT [System.Id], [System.WorkItemType], [System.NodeName], [XR.UModule], [System.Title], [System.AssignedTo], [System.State], [System.CreatedDate], [Microsoft.VSTS.Scheduling.FinishDate], [Microsoft.VSTS.Scheduling.StartDate], [Microsoft.VSTS.Common.StackRank], [System.IterationPath], [UI.Module], [XR.UAttribute], [XR.Requirement.PanGuSSFS], [XR.UStatus], [XR.URecords], [XR.URemark], [System.AreaPath], [System.CreatedBy], [System.ChangedDate], [Microsoft.VSTS.Common.ResolvedBy], [Microsoft.VSTS.Common.ResolvedDate] FROM WorkItems WHERE [System.TeamProject] = 'XR_Loutang'  AND  [System.WorkItemType] = 'User Requirement'  AND  [System.AreaPath] UNDER 'XR_LouTang\User Requirement\PRODM\SW'  AND  [System.State] IN ('35-Resolved', '40-SSIT Done', '50-SI', '60-SIT', '70-ST')  AND  [Microsoft.VSTS.Common.ResolvedDate] &gt;= @today  AND  [System.NodeName] IN ('3D', 'Review', 'Ref', 'PA', 'PR', 'Filming', 'Archiving', 'MainFrame')  AND  [System.IterationPath] UNDER 'XR_LouTang\V0.6' ORDER BY [XR.UModule] desc</queryinfo>
+		<parsemethod>resolvelist</parsemethod>
 		<replacetoday>true</replacetoday>
 	</query>
 </projectquery>

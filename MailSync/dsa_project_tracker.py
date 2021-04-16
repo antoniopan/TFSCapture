@@ -21,25 +21,25 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
 
     xls = xlrd.open_workbook(src_xls)
 
+    # 读取Expired UR
+    urExpired = xls.sheet_by_name("UR Expired")
+    modify_table.fill_html_with_blank_row(tables[0], urExpired.nrows)
+    modify_table.fill_html_from_sheet(urExpired, tables[0])
+
     # 读取Task
     task_sheet = xls.sheet_by_name("Task Table")
-    modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
-    modify_table.sync_xls_html(task_sheet, tables[0])
-
-    # 读取Expired Task
-    ur_this_week = xls.sheet_by_name("Task Expired")
-    modify_table.fill_html_with_blank_row(tables[1], ur_this_week.nrows)
-    modify_table.fill_html_from_sheet(ur_this_week, tables[1])
-
-    # 读取Unreviewed UR
-    urExpired = xls.sheet_by_name("Task Unreviewed")
-    modify_table.fill_html_with_blank_row(tables[2], urExpired.nrows)
-    modify_table.fill_html_from_sheet(urExpired, tables[2])
+    modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
+    modify_table.sync_xls_html(task_sheet, tables[1])
 
     # 读取本周Task变化
     task_this_week = xls.sheet_by_name("Task Change This Week")
-    modify_table.fill_html_with_blank_row(tables[3], task_this_week.nrows)
-    modify_table.fill_html_from_sheet_create_resolve(task_this_week, tables[3])
+    modify_table.fill_html_with_blank_row(tables[2], task_this_week.nrows)
+    modify_table.fill_html_from_sheet_create_resolve(task_this_week, tables[2])
+
+    # 读取本周解决UR
+    ur_this_week = xls.sheet_by_name("UR Resolved This Week")
+    modify_table.fill_html_with_blank_row(tables[3], ur_this_week.nrows)
+    modify_table.fill_html_from_sheet(ur_this_week, tables[3])
 
     if option == 0:
         images = ["%s/Bug评审流程.png" % img_dir]
