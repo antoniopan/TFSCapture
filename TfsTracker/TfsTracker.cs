@@ -433,7 +433,7 @@ namespace TFS_TRACKER
                     ResolvedDate = Convert.ToDateTime(wi["Resolved Date"].ToString(), new System.Globalization.DateTimeFormatInfo()),
                     NodeName = wi.NodeName,
                     ResolvedBy = iIndex > 0 ? sResolvedBy.Substring(0, sResolvedBy.IndexOf('_')) : "",
-                    Reserved = (wi.Type.Name == "Task") ? String.Format("P{0}", wi["Priority"].ToString()) : ""
+                    Reserved = (wi.Type.Name == "Task") ? String.Format("{0}", wi["Priority"].ToString()) : ""
                 });
             }
 
