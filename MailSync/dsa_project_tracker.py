@@ -44,7 +44,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     if option == 0:
         images = ["%s/Bug评审流程.png" % img_dir]
         # receiver = ''
-        receiver = 'HSW_DSA'
+        receiver = 'HSW_GS_DSA'
         # CC = ''
         CC = 'HSW_Manager'
         utils.send_mail(name_file, 'DSA软件状态同步', soup.prettify(), receiver, CC, images)
