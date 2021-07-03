@@ -12,7 +12,7 @@ namespace UIDeal
             var tfsTracker = new TFS_TRACKER.TfsTracker()
             {
                 UserName = "liangliang.pan",
-                Password = "5Antonio",
+                Password = "6Antonio",
                 FileName = args[0],
                 FileNameModule = "haha"
             };
