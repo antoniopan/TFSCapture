@@ -13,18 +13,18 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
 
     xls = xlrd.open_workbook(src_xls)
 
-    # 读取过期的H3 Design Task
-    task_sheet = xls.sheet_by_name("R2 Task Expired")
+    # 读取自测Task
+    task_sheet = xls.sheet_by_name("Task Self-Test")
     modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[0])
 
     # 读取未评审H3 Improvement Task
-    task_sheet = xls.sheet_by_name("H3 Key Expired")
+    task_sheet = xls.sheet_by_name("H3 Task Unreviewed")
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[1])
 
-    # 读取过期uInnovation Improvement Task
-    task_sheet = xls.sheet_by_name("H3 Key This Week")
+    # 读取本周解决 Task
+    task_sheet = xls.sheet_by_name("H3 Task This Week")
     modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[2])
 
