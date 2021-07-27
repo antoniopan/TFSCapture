@@ -27,9 +27,9 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, img_dir, option):
     modify_table.fill_html_from_sheet(urExpired, tables[0])
 
     # 读取Task
-    task_sheet = xls.sheet_by_name("Task Table")
+    task_sheet = xls.sheet_by_name("Task Expired")
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
-    modify_table.sync_xls_html(task_sheet, tables[1])
+    modify_table.fill_html_from_sheet(task_sheet, tables[1])
 
     # 读取本周Task变化
     task_this_week = xls.sheet_by_name("Task Change This Week")
