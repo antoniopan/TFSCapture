@@ -14,7 +14,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
     xls = xlrd.open_workbook(src_xls)
 
     # 读取自测Task
-    task_sheet = xls.sheet_by_name("Task Self-Test")
+    task_sheet = xls.sheet_by_name("Task Expired")
     modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[0])
 
