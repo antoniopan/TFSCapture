@@ -27,7 +27,7 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
     # 读取本周解决 Task
     task_sheet = xls.sheet_by_name("Design Task This Week")
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
-    modify_table.fill_html_from_sheet(task_sheet, tables[2])
+    modify_table.fill_html_from_sheet(task_sheet, tables[1])
 
     if os.path.exists(dst_htm):
         os.remove(dst_htm)
