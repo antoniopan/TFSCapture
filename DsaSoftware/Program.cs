@@ -11,16 +11,16 @@ namespace TestTFS
     {
         static void Main(string[] args)
         {
+            var queries = TFS_TRACKER.TfsTracker.Deserialize(args[2]);
+            TFS_TRACKER.TfsTracker.ProcessQueryXml(queries);
+
             var tfsTracker = new TFS_TRACKER.TfsTracker()
             {
-                UserName = "liangliang.pan",
-                Password = "7Antonio",
+                UserName = queries.user.username,
+                Password = queries.user.password,
                 FileName = args[0],
                 FileNameModule = "haha"
             };
-
-            var queries = TFS_TRACKER.TfsTracker.Deserialize(args[2]);
-            TFS_TRACKER.TfsTracker.ProcessQueryXml(queries);
 
             tfsTracker.InitializeTFS();
 

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>	
 <projectquery>
+	<user>
+		<username>liangliang.pan</username>
+		<password>8Antonio</password>
+	</user>
 	<query>
 		<queryname>Design Task Expired</queryname>
 		<queryinfo>SELECT [System.Id], [System.WorkItemType], [Microsoft.VSTS.Common.Activity], [System.Title], [System.AssignedTo], [System.State], [MR.Requirement.ApplicativeProject], [System.NodeName], [UI.bug.keyword], [UI.Reserved], [UI.Bug.ExpectFixedBranch], [UI.ExpectedSolvedDate], [Microsoft.VSTS.Common.ResolvedDate], [Microsoft.VSTS.Common.ResolvedBy], [System.CreatedDate], [System.ChangedDate] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [Microsoft.VSTS.Common.Activity] = 'Design'  AND ( [System.AreaPath] UNDER 'Task\SW\UIDeal_AWS'  OR  [System.AreaPath] UNDER 'Task\SW\MCSF1' ) AND  [UI.Bug.ExpectFixedBranch] CONTAINS '[SWBU_69SP4_H4]'  AND  [System.State] IN ('New', 'Assigned')  AND  [System.NodeName] IN ('Heart', 'Liver Evaluation', 'Lung Nodule', 'Dual Energy Analysis', 'Dental Application', 'Colon Analysis', 'Body Perfusion', 'Bone Structure Analysis', 'Lung Density Analysis', 'Report', 'Review 4D', 'Dynamic Analysis_CT', 'Vessel Analysis_CT', 'Vessel Analysis_MR', 'Heart_Common', 'Vessel_Common', 'Vessel_Heart_Combined', 'FFR', 'Brain Perfusion_CT_3D', 'App2', 'AppCommon', 'AppCom')  AND ( [UI.ExpectedSolvedDate] &lt; @today  OR  [UI.ExpectedSolvedDate] = '' ) ORDER BY [System.State], [System.NodeName]</queryinfo>
