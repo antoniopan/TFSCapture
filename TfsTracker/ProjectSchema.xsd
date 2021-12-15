@@ -24,9 +24,17 @@
 
   <xs:complexType name="projectqueryType">
     <xs:sequence>
+      <xs:element name="user" type="userType" minOccurs="1" maxOccurs="1"/>
       <xs:element name="query" type="queryType" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="userType">
+    <xs:sequence>
+      <xs:element name="username" type="xs:string"/>
+      <xs:element name="password" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  
   <xs:element name="projectquery" type="projectqueryType"/>
 </xs:schema>

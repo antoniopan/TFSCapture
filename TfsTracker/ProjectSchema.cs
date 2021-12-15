@@ -23,7 +23,20 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.XmlRootAttribute("projectquery", Namespace="", IsNullable=false)]
 public partial class projectqueryType {
     
+    private userType userField;
+    
     private queryType[] queryField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public userType user {
+        get {
+            return this.userField;
+        }
+        set {
+            this.userField = value;
+        }
+    }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("query", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -33,6 +46,40 @@ public partial class projectqueryType {
         }
         set {
             this.queryField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class userType {
+    
+    private string usernameField;
+    
+    private string passwordField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string username {
+        get {
+            return this.usernameField;
+        }
+        set {
+            this.usernameField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+    public string password {
+        get {
+            return this.passwordField;
+        }
+        set {
+            this.passwordField = value;
         }
     }
 }

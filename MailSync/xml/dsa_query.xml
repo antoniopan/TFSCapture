@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <projectquery>
+	<user>
+		<username>liangliang.pan</username>
+		<password>8Antonio</password>
+	</user>
 	<query>
 		<queryname>Task Table</queryname>
 		<queryinfo>SELECT [System.Id], [System.WorkItemType], [System.Title], [Microsoft.VSTS.Common.Priority], [System.AssignedTo], [System.State], [UI.ExpectedSolvedDate], [System.NodeName], [System.AreaPath], [UI.bug.keyword], [UI.Reserved], [System.CreatedBy], [System.CreatedDate], [UI.Bug.ExpectFixedBranch] FROM WorkItems WHERE [System.TeamProject] = 'Task'  AND  [System.WorkItemType] = 'Task'  AND  [System.AreaPath] UNDER 'Task\XR\08_Loutang\Software'  AND  [Microsoft.VSTS.Common.Activity] = 'Improvement'  AND  [Microsoft.VSTS.Common.Priority] IN (0, 1)  AND ( [System.NodeName] IN ('3D', 'Filming', 'MainFrame', 'PA', 'PR', 'Ref', 'RenderServer', 'Review')  OR ( [System.NodeName] = 'Exam'  AND ( [System.AssignedTo] IN ('jihong.li_HSW-GS', 'huan.yu_HSW-GS', 'lei.zhang05_HSW-GS', 'zongli.chen_HSW-GS')  OR  [Microsoft.VSTS.Common.ResolvedBy] IN ('ruixin.zhao_HSW-GS (UNITED-IMAGING\ruixin.zhao)', 'jihong.li_HSW-GS', 'huan.yu_HSW-GS', 'lei.zhang05_HSW-GS', 'zongli.chen_HSW-GS') ))) AND  [UI.Reserved] NOT CONTAINS '临床后'  AND  [UI.Reserved] NOT CONTAINS '[临床不解]' ORDER BY [System.State], [System.NodeName], [System.AssignedTo] desc</queryinfo>
