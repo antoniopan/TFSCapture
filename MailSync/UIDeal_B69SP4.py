@@ -15,19 +15,24 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
     xls = xlrd.open_workbook(src_xls)
 
     # 读取自测Task
-    task_sheet = xls.sheet_by_name("Design Task Expired")
+    task_sheet = xls.sheet_by_name("Improvement Task Expired")
     modify_table.fill_html_with_blank_row(tables[0], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[0])
 
     # 读取未评审H3 Improvement Task
-    #task_sheet = xls.sheet_by_name("H3 Task Unreviewed")
-    #modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
-    #modify_table.fill_html_from_sheet(task_sheet, tables[1])
-
-    # 读取本周解决 Task
-    task_sheet = xls.sheet_by_name("Design Task This Week")
+    task_sheet = xls.sheet_by_name("Improvement Task Unreviewed")
     modify_table.fill_html_with_blank_row(tables[1], task_sheet.nrows)
     modify_table.fill_html_from_sheet(task_sheet, tables[1])
+
+    # 读取未评审H3 Improvement Task
+    task_sheet = xls.sheet_by_name("Improvement Task Not Planned")
+    modify_table.fill_html_with_blank_row(tables[2], task_sheet.nrows)
+    modify_table.fill_html_from_sheet(task_sheet, tables[2])
+
+    # 读取本周解决 Task
+    task_sheet = xls.sheet_by_name("Task Change This Week")
+    modify_table.fill_html_with_blank_row(tables[3], task_sheet.nrows)
+    modify_table.fill_html_from_sheet_create_resolve(task_sheet, tables[3])
 
     if os.path.exists(dst_htm):
         os.remove(dst_htm)
@@ -38,9 +43,9 @@ def modify_html(src_htm, dst_htm, src_xls, name_file, option):
         f.close()
         outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)
-        mail.To = s_name
+        #mail.To = s_name
         mail.Recipients.Add('liangliang.pan_HSW-GS')
-        mail.CC = 'HSW_GS_IPA_AP-APP2; HSW_GS_IPA_AP_APPCOM'
+        #mail.CC = 'HSW_GS_IPA_AP-APP2; HSW_GS_IPA_AP_APPCOM'
         mail.Subject = 'UIDealB69SP4H4软件状态同步%s' % (time.strftime('%Y-%m-%d', time.localtime()))
         mail.HTMLBody = soup.prettify()
         mail.Send()
